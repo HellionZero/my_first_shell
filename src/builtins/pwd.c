@@ -1,32 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 16:22:34 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 14:36:49 by lsarraci         ###   ########.fr       */
+/*   Created: 2025/12/16 13:48:39 by lsarraci          #+#    #+#             */
+/*   Updated: 2025/12/16 13:48:40 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/shell.h"
-
-int	main(void)
-{
-	char	*input;
-
-	while (1)
-	{
-		input = readline("myshell> ");
-		if (!input)
-			break ;
-		if (input[0])
-		{
-			add_history(input);
-			parser(input);
-		}
-		free(input);
-	}
-	return (0);
-}

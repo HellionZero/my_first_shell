@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 16:22:34 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 14:36:49 by lsarraci         ###   ########.fr       */
+/*   Created: 2025/12/16 13:51:29 by lsarraci          #+#    #+#             */
+/*   Updated: 2025/12/16 14:30:38 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/shell.h"
+#include "../../include/shell.h"
 
-int	main(void)
+void	builtin_exit(char **args)
 {
-	char	*input;
+	int	code;
 
-	while (1)
-	{
-		input = readline("myshell> ");
-		if (!input)
-			break ;
-		if (input[0])
-		{
-			add_history(input);
-			parser(input);
-		}
-		free(input);
-	}
-	return (0);
+	ft_printf("exit\n");
+	code = 0;
+	if (args && args[1])
+		code = ft_atoi(args[1]);
+	exit(code);
 }
