@@ -2,11 +2,16 @@ NAME = my_shell
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 SRC = main.c \
-	  parser.c \
+	  parser.c
 
 BLT_DIR = builtins/
-SRC += $(BLT_DIR)exit.c \
-	   
+SRC += $(BLT_DIR)exit.c
+
+LEXER_DIR = lexer/
+SRC += $(LEXER_DIR)token_utils.c
+
+PARSER_UTILS_DIR = parser/
+SRC += $(PARSER_UTILS_DIR)command_utils.c
 ## UTILS_DIR = utils/ 
 ## SRC += $(UTILS_DIR)string_utils.c \
 	   $(UTILS_DIR)array_utils.c \

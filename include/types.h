@@ -1,39 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 16:22:34 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 14:36:49 by lsarraci         ###   ########.fr       */
+/*   Created: 2025/12/16 15:07:38 by lsarraci          #+#    #+#             */
+/*   Updated: 2025/12/16 15:22:29 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/shell.h"
+#ifndef TYPES_H
+# define TYPES_H
 
-int	main(void)
+typedef enum e_token_type
 {
-	char	*input;
-	int		status;
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_STRING
+} t_token_type;
 
-	while (1)
-	{
-		input = readline("myshell> ");
-		if (!input)
-			break ;
-		if (input[0])
-		{
-			add_history(input);
-			status = parser(input);
-			if (status >= 0)
-			{
-				free(input);
-				rl_clear_history();
-				return (status);
-			}
-		}
-		free(input);
-	}
-	return (0);
-}
+#endif

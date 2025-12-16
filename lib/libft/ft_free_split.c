@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 16:22:34 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 14:36:49 by lsarraci         ###   ########.fr       */
+/*   Created: 2025/11/10 15:36:29 by lsarraci          #+#    #+#             */
+/*   Updated: 2025/11/12 16:24:09 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/shell.h"
+#include "libft.h"
 
-int	main(void)
+void	ft_free_split(char **split)
 {
-	char	*input;
-	int		status;
+	int	i;
 
-	while (1)
+	if (!split)
+		return ;
+	i = 0;
+	while (split[i])
 	{
-		input = readline("myshell> ");
-		if (!input)
-			break ;
-		if (input[0])
-		{
-			add_history(input);
-			status = parser(input);
-			if (status >= 0)
-			{
-				free(input);
-				rl_clear_history();
-				return (status);
-			}
-		}
-		free(input);
+		free(split[i]);
+		i++;
 	}
-	return (0);
+	free(split);
 }

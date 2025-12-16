@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 16:23:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 15:12:28 by lsarraci         ###   ########.fr       */
+/*   Created: 2025/12/16 15:11:15 by lsarraci          #+#    #+#             */
+/*   Updated: 2025/12/16 15:11:29 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef PARSER_H
+# define PARSER_H
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <signal.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../lib/libft/libft.h"
-# include "../lib/ft_printf/ft_printf.h"
-# include "builtins.h"
-# include "lexer.h"
-# include "parser.h"
 # include "structs.h"
-# include "types.h"
 
-int		parser(char *input);
-int		builtin_exit(char **args);
+/* Command creation and manipulation */
+t_command	*command_new(void);
+void		command_free(t_command *cmd);
+void		command_list_free(t_command *cmds);
+void		command_list_add_back(t_command **list, t_command *new);
 
 #endif

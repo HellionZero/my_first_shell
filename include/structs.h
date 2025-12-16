@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 16:23:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 15:12:28 by lsarraci         ###   ########.fr       */
+/*   Created: 2025/12/16 15:10:09 by lsarraci          #+#    #+#             */
+/*   Updated: 2025/12/16 15:24:25 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <signal.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../lib/libft/libft.h"
-# include "../lib/ft_printf/ft_printf.h"
-# include "builtins.h"
-# include "lexer.h"
-# include "parser.h"
-# include "structs.h"
 # include "types.h"
 
-int		parser(char *input);
-int		builtin_exit(char **args);
+typedef struct s_token t_token;
+typedef struct s_command t_command;
+
+struct s_token
+{
+	t_token_type	type;
+	char			*value;
+	int				pos;
+	struct s_token	*next;	
+};
+
+struct s_command
+{
+	char				**args;
+	char				*infile;
+	char				*outfile;
+	char				*heredoc;
+	int					append;
+	struct s_command	*next;
+} ;
 
 #endif

@@ -6,7 +6,7 @@
 #    By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/12 17:38:39 by lsarraci          #+#    #+#              #
-#    Updated: 2025/10/16 19:12:57 by lsarraci         ###   ########.fr        #
+#    Updated: 2025/12/16 15:40:38 by lsarraci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,22 +18,25 @@ RF = rm -f
 
 CFLAGS = -Wall -Werror -Wextra
 
-BONUS = ft_lstnew_bonus.c \
-		ft_lstadd_front_bonus.c \
-		ft_lstadd_back_bonus.c \
-		ft_lstsize_bonus.c \
-		ft_lstlast_bonus.c \
-		ft_lstdelone_bonus.c
-
 SRC = ft_atoi.c \
 		ft_bzero.c \
 		ft_calloc.c \
+		ft_free_split.c \
 		ft_isalnum.c \
 		ft_isalpha.c \
 		ft_isascii.c \
 		ft_isdigit.c \
 		ft_isprint.c \
 		ft_itoa.c \
+		ft_lstadd_back.c \
+		ft_lstadd_front.c \
+		ft_lstclear.c \
+		ft_lstdelone.c \
+		ft_lstiter.c \
+		ft_lstlast.c \
+		ft_lstmap.c \
+		ft_lstnew.c \
+		ft_lstsize.c \
 		ft_memchr.c \
 		ft_memcmp.c \
 		ft_memcpy.c \
@@ -62,23 +65,21 @@ SRC = ft_atoi.c \
 		ft_realloc.c \
 		get_next_line.c
 
-OBJ = $(SRC:.c=.o)
+OBJ = $(SRC:.c=.o) 
+		
 
-BONUS_OBJ = $(BONUS:.c=.o)
+OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	ar rcs $(NAME) $(OBJ)
 
-bonus: all $(NAME) $(BONUS_OBJ)
-	ar rcs $(NAME) $(BONUS_OBJ)
-
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RF) $(OBJ) $(BONUS_OBJ)
+	$(RF) $(OBJ)
 
 fclean: clean
 	$(RF) $(NAME)
