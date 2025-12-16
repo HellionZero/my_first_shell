@@ -28,24 +28,33 @@ $(PRINTF):
 	@echo "✓ ft_printf compiled."
 
 $(NAME): $(LIBFT) $(PRINTF) $(OBJ)
-	$(CC) $(OBJ) $(LIBFT) $(PRINTF) -o $(NAME)
+	@echo "Linking object files..."
+	@$(CC) $(OBJ) $(LIBFT) $(PRINTF) -o $(NAME)
+	@echo "✓ $(NAME) created."
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	@echo "Creating object directory..."
+	@mkdir -p $(OBJ_DIR) > /dev/null
+	@echo "✓ Object directory created."
 
 $(OBJ_DIR)/%.o: src/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@echo "Compiling $<..."
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ)
-	if [ -d $(OBJ_DIR) ]; then rmdir $(OBJ_DIR); fi
-	$(MAKE) -C $(LIBFT_DIR) clean
-	$(MAKE) -C $(PRINTF_DIR) clean
+	@echo "removing object files..."
+	@if [ -d $(OBJ_DIR) ]; then rmdir $(OBJ_DIR); fi
+	@$(MAKE) -C $(LIBFT_DIR) clean > /dev/null
+	@$(MAKE) -C $(PRINTF_DIR) clean > /dev/null
+	@echo "✓ Cleaned."
 
 fclean: clean
-	$(RM) $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(MAKE) -C $(PRINTF_DIR) fclean
+	@echo "removing executable..."
+	@$(RM) $(NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean > /dev/null
+	@$(MAKE) -C $(PRINTF_DIR) fclean > /dev/null
+	@echo "✓ Executable removed."
 
 re: fclean all
 
