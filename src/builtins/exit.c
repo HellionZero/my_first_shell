@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:51:29 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 14:49:27 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:33:15 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,3 @@ int	builtin_exit(char **args)
 		code = ft_atoi(args[1]);
 	return (code);
 }
-

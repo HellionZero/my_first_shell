@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:07:38 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 15:22:29 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:29:39 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ typedef enum e_token_type
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
 	TOKEN_STRING
-} t_token_type;
+}	t_token_type;
 
 #endif

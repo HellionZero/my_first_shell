@@ -12,6 +12,15 @@ SRC += $(LEXER_DIR)token_utils.c
 
 PARSER_UTILS_DIR = parser/
 SRC += $(PARSER_UTILS_DIR)command_utils.c
+
+SIGNAL_UTLIS_DIR = signals/
+SRC += $(SIGNAL_UTLIS_DIR)signals.c \
+	   $(SIGNAL_UTLIS_DIR)signals_setup.c \
+
+DISPLAY_DIR = display/
+SRC += $(DISPLAY_DIR)banner.c \
+	   $(DISPLAY_DIR)prompt.c
+
 ## UTILS_DIR = utils/ 
 ## SRC += $(UTILS_DIR)string_utils.c \
 	   $(UTILS_DIR)array_utils.c \

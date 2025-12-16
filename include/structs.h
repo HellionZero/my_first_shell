@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:10:09 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 15:24:25 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:33:01 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "types.h"
 
-typedef struct s_token t_token;
-typedef struct s_command t_command;
+typedef struct s_token		t_token;
+typedef struct s_command	t_command;
 
 struct s_token
 {
@@ -24,7 +24,7 @@ struct s_token
 	char			*value;
 	int				pos;
 	struct s_token	*next;	
-};
+}	;
 
 struct s_command
 {
@@ -34,6 +34,6 @@ struct s_command
 	char				*heredoc;
 	int					append;
 	struct s_command	*next;
-} ;
+}	;
 
 #endif
