@@ -6,17 +6,11 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 18:56:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/17 19:16:16 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/17 19:19:22 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
-
-static int	is_word_char(char c)
-{
-	return (!is_operator(c) && c != ' ' && c != '\t'
-		&& c != '\'' && c != '"' && c != '$');
-}
 
 static char	*extract_word(char *input, int *i)
 {

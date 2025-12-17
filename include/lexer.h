@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:04:24 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/17 19:15:53 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/17 19:23:44 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 /*--------------- lexer utilities ---------------------------*/
 int		is_operator(char c);
 int		skip_spaces(char *input, int i);
+int		is_word_char(char c);
+t_token	*create_single_token(char *op_string,
+			t_token_type type, int *i, int pos);
 
 /*------------------- lexer operations ----------------------*/
 
