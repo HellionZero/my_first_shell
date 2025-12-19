@@ -1,1 +1,3 @@
 .vscode
+tests
+run_tests.sh

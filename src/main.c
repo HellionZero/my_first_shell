@@ -12,10 +12,26 @@
 
 #include "../include/shell.h"
 
+static int	process_input(char *input)
+{
+	t_token	*tokens;
+	int		status;
+
+	tokens = lexer(input);
+	if (!tokens)
+	{
+		ft_printf("Error: lexer failed\n");
+		return (-1);
+	}
+	print_tokens(tokens);
+	status = parser(input);
+	token_list_free(tokens);
+	return (status);
+}
+
 int	main(void)
 {
 	char	*input;
-	t_token	*tokens;
 	int		status;
 
 	display_banner();
@@ -28,16 +44,7 @@ int	main(void)
 		if (input[0])
 		{
 			add_history(input);
-			tokens = lexer(input);
-			if (!tokens)
-			{
-				ft_printf("Error: lexer failed");
-				free(input);
-				continue ;
-			}
-			print_tokens(tokens);
-			status = parser(input);
-			token_list_free(tokens);
+			status = process_input(input);
 			if (status >= 0)
 			{
 				free(input);

@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:30:00 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/19 14:25:44 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/19 16:02:28 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ t_token	*token_new(t_token_type type, char *value, int pos)
 		return (NULL);
 	}
 	token->pos = pos;
-	token->length = ft_strlen(value);
-	token->quote_type = 0;
 	token->next = NULL;
 	return (token);
 }
@@ -51,6 +49,8 @@ void	token_free(t_token *token)
 		return ;
 	if (token->value)
 		free(token->value);
+	if (token->parts)
+		word_part_list_free(token->parts);
 	free(token);
 }
 

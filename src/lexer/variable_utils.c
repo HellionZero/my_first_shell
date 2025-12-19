@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   types.h                                            :+:      :+:    :+:   */
+/*   variable_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/16 15:07:38 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/19 16:35:46 by lsarraci         ###   ########.fr       */
+/*   Created: 2025/12/19 17:19:13 by lsarraci          #+#    #+#             */
+/*   Updated: 2025/12/19 18:18:58 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TYPES_H
-# define TYPES_H
+#include "../../include/shell.h"
 
-typedef enum e_token_type
+int	is_special_var_char(char c)
 {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_APPEND,
-	TOKEN_HEREDOC,
-	TOKEN_SINGLE_QUOTE,
-	TOKEN_DOUBLE_QUOTE,
-	TOKEN_VARIABLE,
-	TOKEN_AND,
-	TOKEN_OR,
-}	t_token_type;
+	return (c == '?' || c == '$' || c == '#'
+		|| c == '!' || c == '@' || c == '*');
+}
 
-typedef enum e_word_part_type
+int	is_var_name_char(char c)
 {
-	PART_LITERAL,
-	PART_SINGLE_QUOTE,
-	PART_DOUBLE_QUOTE,
-	PART_VARIABLE,
-}	t_word_part_type;
-
-#endif
+	return (ft_isalnum(c) || c == '_');
+}
