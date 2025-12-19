@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:04:24 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/17 19:23:44 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/19 14:23:35 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_token	*create_single_token(char *op_string,
 
 /*------------------- lexer operations ----------------------*/
 
-t_token	*create_operator_token(char *input, int *i, int *pos);
+t_token	*create_logical_token(char *input, int *i, int *pos);
+t_token	*create_arrow_token(char *input, int *i, int *pos);
 t_token	*create_word_token(char *input, int *i, int *pos);
 t_token	*lexer(char *input);
 

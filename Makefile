@@ -10,7 +10,8 @@ SRC += $(BLT_DIR)exit.c
 LEXER_DIR = lexer/
 SRC +=  $(LEXER_DIR)token_utils.c \
 		$(LEXER_DIR)lexer_words.c \
-		$(LEXER_DIR)lexer_commands.c \
+		$(LEXER_DIR)lexer_logical.c \
+		$(LEXER_DIR)lexer_arrows.c \
 		$(LEXER_DIR)lexer_utils.c \
 	    $(LEXER_DIR)lexer.c
 

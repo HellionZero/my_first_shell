@@ -6,11 +6,20 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:18:45 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/17 19:22:53 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/19 14:24:01 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
+
+static t_token	*handle_operator(char *input, int *i, int *pos)
+{
+	if (input[*i] == '<' || input[*i] == '>')
+		return (create_arrow_token(input, i, pos));
+	else if (input[*i] == '|' || input[*i] == '&')
+		return (create_logical_token(input, i, pos));
+	return (NULL);
+}
 
 t_token	*lexer(char *input)
 {
@@ -28,7 +37,7 @@ t_token	*lexer(char *input)
 		if (!input[i])
 			break ;
 		if (is_operator(input[i]))
-			new = create_operator_token(input, &i, &pos);
+			new = handle_operator(input, &i, &pos);
 		else
 			new = create_word_token(input, &i, &pos);
 		if (!new)
