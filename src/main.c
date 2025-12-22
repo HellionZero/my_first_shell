@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:22:34 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/17 19:23:41 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:15:59 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static int	process_input(char *input)
 {
-	t_token	*tokens;
-	int		status;
+	t_token		*tokens;
+	t_ast_node	*tree;
+	int			status;
 
 	tokens = lexer(input);
 	if (!tokens)
@@ -24,7 +25,16 @@ static int	process_input(char *input)
 		return (-1);
 	}
 	print_tokens(tokens);
+	tree = parse_tokens(tokens);
+	if (!tree)
+	{
+		ft_printf("Error: parser failed\n");
+		token_list_free(tokens);
+		return (-1);
+	}
+	print_ast(tree);
 	status = parser(input);
+	node_free(tree);
 	token_list_free(tokens);
 	return (status);
 }

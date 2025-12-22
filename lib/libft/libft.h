@@ -71,7 +71,7 @@ int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
-void	*ft_realloc(void *ptr, size_t size);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 char	*get_next_line(int fd);
 
 #endif

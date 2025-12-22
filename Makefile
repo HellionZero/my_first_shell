@@ -21,11 +21,17 @@ SRC +=  $(LEXER_DIR)token_utils.c \
 	    $(LEXER_DIR)lexer.c
 
 PARSER_UTILS_DIR = parser/
-SRC += $(PARSER_UTILS_DIR)command_utils.c
+SRC += $(PARSER_UTILS_DIR)command_utils.c \
+	   $(PARSER_UTILS_DIR)node_utils.c \
+	   $(PARSER_UTILS_DIR)parser_expansion.c \
+	   $(PARSER_UTILS_DIR)parser_utils.c \
+	   $(PARSER_UTILS_DIR)parser_command.c \
+	   $(PARSER_UTILS_DIR)parser_build.c \
+	   $(PARSER_UTILS_DIR)parser_special.c
 
 SIGNAL_UTILS_DIR = signals/
 SRC += $(SIGNAL_UTILS_DIR)signals.c \
-	   $(SIGNAL_UTILS_DIR)signals_setup.c \
+	   $(SIGNAL_UTILS_DIR)signals_setup.c
 
 DISPLAY_DIR = display/
 SRC += $(DISPLAY_DIR)banner.c \
@@ -33,7 +39,13 @@ SRC += $(DISPLAY_DIR)banner.c \
 
 DEBUG_DIR = debug/
 SRC += $(DEBUG_DIR)lexer_debug.c \
-## UTILS_DIR = utils/ 
+	   $(DEBUG_DIR)parser_debug.c \
+	   $(DEBUG_DIR)parser_debug_utils.c
+
+UTILS_DIR = utils/
+SRC += $(UTILS_DIR)exit_status.c
+
+## OLD UTILS (commented for now)
 ## SRC += $(UTILS_DIR)string_utils.c \
 	   $(UTILS_DIR)array_utils.c \
 	   $(UTILS_DIR)file_utils.c \

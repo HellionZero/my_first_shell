@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:23:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/17 19:07:47 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:16:09 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@
 # define F_MAGENTA "\033[35m"
 # define F_CYAN "\033[36m"
 # define F_WHITE "\033[37m"
+
+/* Exit status management */
+void	set_exit_status(int status);
+int		get_exit_status(void);
 
 int		parser(char *input);
 int		builtin_exit(char **args);
