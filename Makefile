@@ -21,13 +21,20 @@ SRC +=  $(LEXER_DIR)token_utils.c \
 	    $(LEXER_DIR)lexer.c
 
 PARSER_UTILS_DIR = parser/
-SRC += $(PARSER_UTILS_DIR)command_utils.c \
-	   $(PARSER_UTILS_DIR)node_utils.c \
-	   $(PARSER_UTILS_DIR)parser_expansion.c \
-	   $(PARSER_UTILS_DIR)parser_utils.c \
-	   $(PARSER_UTILS_DIR)parser_command.c \
-	   $(PARSER_UTILS_DIR)parser_build.c \
-	   $(PARSER_UTILS_DIR)parser_special.c
+SRC +=	$(PARSER_UTILS_DIR)command_utils.c \
+		$(PARSER_UTILS_DIR)general_utils.c \
+		$(PARSER_UTILS_DIR)heredoc_utils.c \
+		$(PARSER_UTILS_DIR)node_utils.c \
+		$(PARSER_UTILS_DIR)redirect_utils.c \
+		$(PARSER_UTILS_DIR)parser_expansion.c \
+		$(PARSER_UTILS_DIR)parser_heredoc.c \
+		$(PARSER_UTILS_DIR)parser_special.c \
+		$(PARSER_UTILS_DIR)parser_syntax.c \
+		$(PARSER_UTILS_DIR)parser_utils.c \
+		$(PARSER_UTILS_DIR)parser_command.c \
+		$(PARSER_UTILS_DIR)parser_build.c \
+		$(PARSER_UTILS_DIR)parser_special.c \
+		$(PARSER_UTILS_DIR)syntax_utils.c \
 
 SIGNAL_UTILS_DIR = signals/
 SRC += $(SIGNAL_UTILS_DIR)signals.c \

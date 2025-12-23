@@ -18,6 +18,7 @@
 typedef struct s_token		t_token;
 typedef struct s_command	t_command;
 typedef struct s_word_part	t_word_part;
+typedef struct s_redirect	t_redirect;
 typedef struct s_ast_node	t_ast_node;
 typedef struct s_env		t_env_var;
 typedef struct s_env		t_env;
@@ -38,13 +39,18 @@ struct s_word_part
 	struct s_word_part	*next;
 }	;
 
+struct s_redirect
+{
+	t_token_type		type;
+	char				*file;
+	char				*delimiter;
+	struct s_redirect	*next;
+}	;
+
 struct s_command
 {
 	char				**args;
-	char				*infile;
-	char				*outfile;
-	char				*heredoc;
-	int					append;
+	t_redirect			*redirects;
 	struct s_command	*next;
 }	;
 

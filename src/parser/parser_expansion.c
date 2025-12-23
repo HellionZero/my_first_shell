@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 17:19:18 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/22 17:57:03 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/23 17:21:43 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*expand_variable(char *var_name)
 char	*expand_word(t_word_part *parts)
 {
 	char		*result;
-	char		*temp;
 	char		*expanded;
 
 	result = ft_strdup("");
@@ -37,15 +36,13 @@ char	*expand_word(t_word_part *parts)
 	{
 		if (parts->type == PART_LITERAL || parts->type == PART_SINGLE_QUOTE
 			|| parts->type == PART_DOUBLE_QUOTE)
-			temp = ft_strjoin(result, parts->content);
+			result = join_and_free(result, parts->content);
 		else if (parts->type == PART_VARIABLE)
 		{
 			expanded = expand_variable(parts->content);
-			temp = ft_strjoin(result, expanded);
+			result = join_and_free(result, expanded);
 			free(expanded);
 		}
-		free(result);
-		result = temp;
 		parts = parts->next;
 	}
 	return (result);

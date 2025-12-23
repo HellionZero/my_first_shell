@@ -1,56 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_utils.c                                    :+:      :+:    :+:   */
+/*   redirect_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/16 15:30:00 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/22 19:11:43 by lsarraci         ###   ########.fr       */
+/*   Created: 2025/12/23 16:39:40 by lsarraci          #+#    #+#             */
+/*   Updated: 2025/12/23 16:39:53 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-t_command	*command_new(void)
+t_redirect	*redirect_new(t_token_type type, char *file, char *delimiter)
 {
-	t_command	*cmd;
+	t_redirect	*redir;
 
-	cmd = malloc(sizeof(t_command));
-	if (!cmd)
+	redir = malloc(sizeof(t_redirect));
+	if (!redir)
 		return (NULL);
-	cmd->args = NULL;
-	cmd->redirects = NULL;
-	cmd->next = NULL;
-	return (cmd);
+	redir->type = type;
+	redir->file = file;
+	redir->delimiter = delimiter;
+	redir->next = NULL;
+	return (redir);
 }
 
-void	command_free(t_command *cmd)
+void	redirect_free(t_redirect *redir)
 {
-	if (!cmd)
+	if (!redir)
 		return ;
-	if (cmd->args)
-		ft_free_split(cmd->args);
-	if (cmd->redirects)
-		redirect_list_free(cmd->redirects);
-	free(cmd);
+	if (redir->file)
+		free(redir->file);
+	if (redir->delimiter)
+		free(redir->delimiter);
+	free(redir);
 }
 
-void	command_list_free(t_command *cmds)
+void	redirect_list_free(t_redirect *redirects)
 {
-	t_command	*tmp;
+	t_redirect	*tmp;
 
-	while (cmds)
+	while (redirects)
 	{
-		tmp = cmds->next;
-		command_free(cmds);
-		cmds = tmp;
+		tmp = redirects->next;
+		redirect_free(redirects);
+		redirects = tmp;
 	}
 }
 
-void	command_list_add_back(t_command **list, t_command *new)
+void	redirect_add_back(t_redirect **list, t_redirect *new)
 {
-	t_command	*current;
+	t_redirect	*current;
 
 	if (!list || !new)
 		return ;
