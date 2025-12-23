@@ -32,8 +32,9 @@ SRC +=	$(PARSER_UTILS_DIR)command_utils.c \
 		$(PARSER_UTILS_DIR)parser_syntax.c \
 		$(PARSER_UTILS_DIR)parser_utils.c \
 		$(PARSER_UTILS_DIR)parser_command.c \
+		$(PARSER_UTILS_DIR)parser_errors.c \
 		$(PARSER_UTILS_DIR)parser_build.c \
-		$(PARSER_UTILS_DIR)parser_special.c \
+		$(PARSER_UTILS_DIR)syntax_checks.c \
 		$(PARSER_UTILS_DIR)syntax_utils.c \
 
 SIGNAL_UTILS_DIR = signals/

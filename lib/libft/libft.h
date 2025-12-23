@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 16:44:18 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/16 15:42:30 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/23 18:41:37 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(char *str, int character);
+int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strdup(char *src);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 char	*ft_strjoin(char const *s1, char const *s2);

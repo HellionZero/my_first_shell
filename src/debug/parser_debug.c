@@ -30,7 +30,7 @@ static void	print_tree_recursive(t_ast_node *node, int indent)
 		return ;
 	print_indent(indent);
 	ft_printf("Node: %s\n", get_node_type_names()[node->type]);
-	if (node->type == NODE_COMMAND)
+	if (node->type == NODE_COMMAND && node->cmd)
 		print_command(node->cmd, indent + 1);
 	else
 	{

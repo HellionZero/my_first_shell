@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 19:01:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/22 19:02:14 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:02:54 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,36 @@ void	print_args(char **args)
 	}
 }
 
+int	check_type(t_token_type type)
+{
+	if (type == TOKEN_REDIR_IN)
+		return (1);
+	else if (type == TOKEN_REDIR_OUT)
+		return (2);
+	else if (type == TOKEN_APPEND)
+		return (3);
+	else if (type == TOKEN_HEREDOC)
+		return (4);
+	return (0);
+}
+
 void	print_redirects(t_command *cmd)
 {
-	if (cmd->infile)
-		ft_printf(" < %s", cmd->infile);
-	if (cmd->outfile)
+	t_redirect	*redir;
+
+	redir = cmd->redirects;
+	while (redir)
 	{
-		if (cmd->append)
-			ft_printf(" >> %s", cmd->outfile);
-		else
-			ft_printf(" > %s", cmd->outfile);
+		if (redir->type == TOKEN_REDIR_IN)
+			ft_printf(" < %s", redir->file);
+		else if (redir->type == TOKEN_REDIR_OUT)
+			ft_printf(" > %s", redir->file);
+		else if (redir->type == TOKEN_APPEND)
+			ft_printf(" >> %s", redir->file);
+		else if (redir->type == TOKEN_HEREDOC)
+			ft_printf(" << %s", redir->delimiter);
+		redir = redir->next;
 	}
-	if (cmd->heredoc)
-		ft_printf(" << (heredoc)");
 }
 
 void	print_command(t_command *cmd, int indent)
@@ -58,7 +75,7 @@ void	print_command(t_command *cmd, int indent)
 	ft_printf("Command: [");
 	print_args(cmd->args);
 	ft_printf("]\n");
-	if (cmd->infile || cmd->outfile || cmd->heredoc)
+	if (cmd->redirects)
 	{
 		print_indent(indent);
 		ft_printf("Redirects:");

@@ -6,43 +6,39 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:22:34 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/22 19:15:59 by lsarraci         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:03:26 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/shell.h"
 
-static int	process_input(char *input)
+static void	process_input_debug(char *input)
 {
 	t_token		*tokens;
 	t_ast_node	*tree;
-	int			status;
 
 	tokens = lexer(input);
 	if (!tokens)
 	{
-		ft_printf("Error: lexer failed\n");
-		return (-1);
+		ft_printf("[DEBUG] Lexer failed\n");
+		return ;
 	}
 	print_tokens(tokens);
 	tree = parse_tokens(tokens);
 	if (!tree)
 	{
-		ft_printf("Error: parser failed\n");
+		ft_printf("[DEBUG] Parser failed\n");
 		token_list_free(tokens);
-		return (-1);
+		return ;
 	}
 	print_ast(tree);
-	status = parser(input);
 	node_free(tree);
 	token_list_free(tokens);
-	return (status);
 }
 
 int	main(void)
 {
 	char	*input;
-	int		status;
 
 	display_banner();
 	setup_signals_interactive();
@@ -54,13 +50,7 @@ int	main(void)
 		if (input[0])
 		{
 			add_history(input);
-			status = process_input(input);
-			if (status >= 0)
-			{
-				free(input);
-				rl_clear_history();
-				return (status);
-			}
+			process_input_debug(input);
 		}
 		free(input);
 	}
