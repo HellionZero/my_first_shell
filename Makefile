@@ -11,9 +11,7 @@ SRC += $(EXEC_DIR)execution_main.c \
        $(EXEC_DIR)execute_builtin_command.c \
        $(EXEC_DIR)execute_pipe.c \
        $(EXEC_DIR)execute_logical.c \
-       $(EXEC_DIR)execute_utils.c \
-       $(EXEC_DIR)env_utils.c \
-       $(EXEC_DIR)builtin_utils.c
+       $(EXEC_DIR)execute_utils.c
 
 LEXER_DIR = lexer/
 SRC +=  $(LEXER_DIR)token_utils.c \
@@ -59,7 +57,13 @@ SRC += $(DEBUG_DIR)lexer_debug.c \
 	   $(DEBUG_DIR)parser_debug_utils.c
 
 UTILS_DIR = utils/
-SRC += $(UTILS_DIR)exit_status.c
+SRC += $(UTILS_DIR)exit_status.c \
+
+ENV_DIR = env/
+SRC += $(ENV_DIR)env_conversion.c \
+	   $(ENV_DIR)env_init.c \
+	   $(ENV_DIR)env_node_utils.c \
+	   $(ENV_DIR)env_utils.c
 
 ## OLD UTILS (commented for now)
 ## SRC += $(UTILS_DIR)string_utils.c \

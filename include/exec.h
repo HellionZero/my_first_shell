@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:52:17 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/02 17:34:48 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/02 17:52:09 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ int			is_builtin(char *cmd);
 int			is_valid_identifier(char *str);
 int			count_args(char **args);
 int			is_numeric(char *str);
-
-/*--------- environment management utils -----------------*/
-t_env_var	*create_env_node(char *key, char *value);
-void		free_env_node(t_env_var *node);
-void		free_env_list(t_env_var *list);
 
 /*--------- execiton main functions ----------------------*/
 int			execute_ast(t_ast_node *node, t_env *env);

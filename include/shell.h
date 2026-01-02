@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:23:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/02 16:55:19 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/02 17:52:32 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include "types.h"
 # include "lexer.h"
 # include "debug.h"
+# include "env.h"
 
 # define F_BLACK "\033[30m"
 # define F_RED "\033[31m"

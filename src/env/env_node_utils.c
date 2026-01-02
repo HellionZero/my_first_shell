@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
+/*   env_node_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 16:32:45 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/02 17:02:06 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/02 18:12:24 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,12 @@ void	free_env_list(t_env_var *list)
 		free_env_node(current);
 		current = next;
 	}
+}
+
+void	free_env(t_env *env)
+{
+	if (!env)
+		return ;
+	free_env_list(env->vars);
+	free(env);
 }

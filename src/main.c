@@ -33,13 +33,16 @@ static void	process_input(char *input, t_env *env)
 	token_list_free(tokens);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
-	t_env	env;
+	t_env	*env;
 
-	env.vars = NULL;
-	env.last_exit_status = 0;
+	(void)argc;
+	(void)argv;
+	env = init_env(envp);
+	if (!env)
+		return (1);
 	display_banner();
 	setup_signals_interactive();
 	while (1)
@@ -50,10 +53,10 @@ int	main(void)
 		if (input[0])
 		{
 			add_history(input);
-			process_input(input, &env);
+			process_input(input, env);
 		}
 		free(input);
 	}
-	free_env_list(env.vars);
-	return (env.last_exit_status);
+	free_env(env);
+	return (0);
 }
