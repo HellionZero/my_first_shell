@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:43:44 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 16:28:38 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/11 22:39:43 by loda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	print_sorted_env(t_env *env)
 	current = env->vars;
 	while (current)
 	{
-		ft_printf("%s=\"%s\"\n", current->key, current->value);
+		ft_printf("declare -x %s=\"%s\"\n", current->key, current->value);
 		current = current->next;
 	}
 }

@@ -42,10 +42,18 @@ static void	free_path_array(char **paths)
 
 static char	*check_direct_path(char *cmd)
 {
+	struct stat	path_stat;
+
 	if (ft_strchr(cmd, '/'))
 	{
-		if (validate_executable(cmd))
-			return (ft_strdup(cmd));
+		if (is_directory(cmd))
+			return (NULL);
+		if (stat(cmd, &path_stat) == 0)
+		{
+			if (validate_executable(cmd))
+				return (ft_strdup(cmd));
+			return ((char *)-1);
+		}
 		return (NULL);
 	}
 	return (NULL);

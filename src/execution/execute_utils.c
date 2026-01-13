@@ -80,6 +80,11 @@ char	*define_executable(t_command *cmd, t_env *env)
 	char	*executable;
 
 	executable = find_executable(cmd->args[0], env);
+	if (executable == (char *)-1)
+	{
+		ft_printf("%s: Permission denied\n", cmd->args[0]);
+		return ((char *)-1);
+	}
 	if (!executable)
 	{
 		ft_printf("%s: command not found\n", cmd->args[0]);

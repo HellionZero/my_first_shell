@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_expansion.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 17:19:18 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 17:16:52 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/12 02:31:19 by loda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static char	*process_quoted_variable(char *str, int *i)
 	int		start;
 
 	start = ++(*i);
-	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
+	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'
+			|| str[*i] == '?' || str[*i] == '$'))
 		(*i)++;
 	var_name = ft_substr(str, start, *i - start);
 	var_value = expand_variable(var_name);

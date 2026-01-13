@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:54:59 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 17:09:38 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/12 03:42:03 by loda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,14 @@ int	execute_command(t_command *cmd, t_env *env)
 		return (execute_redirects(cmd, -1, env));
 	if (is_builtin(cmd->args[0]))
 		return (execute_builtin(cmd->args, env));
+	if (is_directory(cmd->args[0]))
+	{
+		ft_printf("%s: is a directory\n", cmd->args[0]);
+		return (126);
+	}
 	executable = define_executable(cmd, env);
+	if (executable == (char *)-1)
+		return (126);
 	if (!executable)
 		return (127);
 	return (fork_and_execute(cmd, executable, env));
