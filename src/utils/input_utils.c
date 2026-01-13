@@ -14,18 +14,22 @@
 
 char	*read_line_with_prompt(char *prompt)
 {
-	char	*line;
-	size_t	len;
+	char			*line;
+	size_t			len;
+	t_signal_state	*state;
 
-	if (isatty(STDIN_FILENO))
-		return (readline(prompt));
-	if (prompt)
-		ft_printf("%s", prompt);
-	line = get_next_line(STDIN_FILENO);
-	if (!line)
-		return (NULL);
-	len = ft_strlen(line);
-	if (len > 0 && line[len - 1] == '\n')
-		line[len - 1] = '\0';
-	return (line);
+	state = get_signal_state();
+	if (state->in_heredoc || !isatty(STDIN_FILENO))
+	{
+		if (prompt && isatty(STDIN_FILENO))
+			ft_printf("%s", prompt);
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			return (NULL);
+		len = ft_strlen(line);
+		if (len > 0 && line[len - 1] == '\n')
+			line[len - 1] = '\0';
+		return (line);
+	}
+	return (readline(prompt));
 }

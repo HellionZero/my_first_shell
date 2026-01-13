@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expansion_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 15:51:01 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/11 15:56:27 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/13 14:57:04 by loda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,22 @@ int	should_expand_heredoc(char *delimiter)
 void	read_heredoc_content(int pipe_fd, char *delimiter,
 	char *clean_delim)
 {
-	char	*line;
-	char	*expanded;
+	char			*line;
+	char			*expanded;
+	t_signal_state	*state;
 
+	state = get_signal_state();
 	while (1)
 	{
+		if (state->received == SIGINT)
+			break ;
 		line = read_line_with_prompt("> ");
+		if (state->received == SIGINT)
+		{
+			if (line)
+				free(line);
+			break ;
+		}
 		if (is_delimiter_reached(line, clean_delim))
 		{
 			if (line)

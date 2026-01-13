@@ -28,6 +28,5 @@ void	signal_exit_heredoc(void)
 
 	state = get_signal_state();
 	state->in_heredoc = 0;
-	state->received = 0;
 	setup_signals_interactive();
 }

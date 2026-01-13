@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:56:59 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/11 16:56:13 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:13:33 by loda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,7 @@ void	handle_sigint(int sig)
 	state = get_signal_state();
 	state->received = sig;
 	if (state->in_heredoc)
-	{
 		write(STDOUT_FILENO, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-	}
 	else
 	{
 		write(STDOUT_FILENO, "\n", 1);
