@@ -1,4 +1,4 @@
-NAME = my_shell
+NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 SRC = main.c
