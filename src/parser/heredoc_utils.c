@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 16:44:11 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/19 15:35:09 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/19 16:02:39 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,27 @@ char	*extract_var_name_heredoc(char *start, int *len)
 	return (var_name);
 }
 
-void	write_line_to_pipe(int fd, char *line)
-{
-	write(fd, line, ft_strlen(line));
-	write(fd, "\n", 1);
-}
-
-int	check_delimeter(char *line, char *clean_delim)
+static int	check_delimeter(char *line, char *clean_delim)
 {
 	if (is_delimiter_reached(line, clean_delim))
 	{
-		free_line(line);
+		if (!line || line[0] == '\0')
+			return (0);
+		free(line);
 		return (1);
 	}
 	return (0);
+}
+
+static int	check_line_with_prompt(char **line_ptr, char *prompt)
+{
+	char	*line;
+
+	line = read_line_with_prompt(prompt);
+	if (!line)
+		return (0);
+	*line_ptr = line;
+	return (1);
 }
 
 void	read_heredoc_content(int pipe_fd, char *delimiter,
@@ -71,12 +78,8 @@ void	read_heredoc_content(int pipe_fd, char *delimiter,
 	{
 		if (state->received == SIGINT)
 			break ;
-		line = read_line_with_prompt("> ");
-		if (state->received == SIGINT)
-		{
-			free_line(line);
+		if (check_line_with_prompt(&line, "> ") == 0)
 			break ;
-		}
 		if (check_delimeter(line, clean_delim))
 			break ;
 		expanded = get_expanded_line(line, delimiter);

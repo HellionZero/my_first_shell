@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 15:37:29 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 14:20:04 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/19 15:59:22 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,27 @@ static int	apply_single_redirect(t_redirect *redir)
 		return (apply_append(redir));
 	else if (redir->type == TOKEN_HEREDOC)
 		return (apply_heredoc(redir));
+	return (1);
+}
+
+static int	apply_child_redirects(t_redirect *redir, t_command *cmd, t_env *env)
+{
+	pid_t	pid;
+
+	if (!cmd || !cmd->redirects)
+		return (1);
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), 1);
+	if (pid == 0)
+	{
+		if (!apply_single_redirect(redir))
+			child_cleanup_and_exit(env, 1);
+		child_cleanup_and_exit(env, 0);
+		free_env(env);
+		exit(0);
+	}
+	waitpid(pid, NULL, 0);
 	return (1);
 }
 
@@ -51,6 +72,11 @@ int	apply_redirects(t_command *cmd)
 	while (current)
 	{
 		if (!apply_single_redirect(current))
+		{
+			cleanup_unused_heredocs(cmd);
+			return (0);
+		}
+		else if (!apply_child_redirects(current, cmd, NULL))
 		{
 			cleanup_unused_heredocs(cmd);
 			return (0);
