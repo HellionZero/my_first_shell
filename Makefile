@@ -7,6 +7,7 @@ EXEC_DIR = execution/
 SRC += $(EXEC_DIR)execution_main.c \
        $(EXEC_DIR)execute_command.c \
        $(EXEC_DIR)execute_builtin.c \
+	   $(EXEC_DIR)execute_child_process.c \
 	   $(EXEC_DIR)execute_builtin_files.c \
        $(EXEC_DIR)execute_pipe.c \
 	   $(EXEC_DIR)execute_pipe_utils.c \

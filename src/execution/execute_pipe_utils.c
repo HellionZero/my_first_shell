@@ -12,22 +12,7 @@
 
 #include "../../include/shell.h"
 
-void	set_exit(t_ast_node *node, t_env *env)
-{
-	if (!node)
-		exit(1);
-	if (node->type == NODE_PIPE)
-		exit(execute_pipe(node, env));
-	if (node->type != NODE_COMMAND || !node->cmd)
-		exit(1);
-	if (!node->cmd->args || !node->cmd->args[0])
-		exit(0);
-	if (is_builtin(node->cmd->args[0]))
-		exit(execute_builtin(node->cmd->args, env));
-}
-
-void	free_exec_and_exit(char *exec)
-{
-	free(exec);
-	exit(1);
-}
+/*
+** Este arquivo foi mantido para compatibilidade futura
+** As funções de processo filho foram movidas para execute_child_process.c
+*/

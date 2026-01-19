@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:54:59 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/12 03:42:03 by loda-sil         ###   ########.fr       */
+/*   Updated: 2026/01/19 15:00:16 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
-
-static void	child_process(t_command *cmd, char *executable, t_env *env)
-{
-	char	**envp;
-
-	restore_signals_default();
-	if (!apply_redirects(cmd))
-		exit(1);
-	envp = env_to_array(env);
-	if (!envp)
-		exit(1);
-	execve(executable, cmd->args, envp);
-	ft_printf("%s: execution failed\n", cmd->args[0]);
-	free_env_array(envp);
-	exit(126);
-}
 
 static int	wait_child(pid_t pid)
 {
@@ -45,6 +29,7 @@ static int	fork_and_execute(t_command *cmd, char *executable, t_env *env)
 {
 	pid_t	pid;
 
+	(void)executable;
 	setup_signals_executing();
 	pid = fork();
 	if (pid == -1)
@@ -54,7 +39,7 @@ static int	fork_and_execute(t_command *cmd, char *executable, t_env *env)
 		return (1);
 	}
 	if (pid == 0)
-		child_process(cmd, executable, env);
+		child_execute_command(cmd, env);
 	free(executable);
 	return (wait_child(pid));
 }

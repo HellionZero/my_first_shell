@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 16:44:11 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/11 15:56:43 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/19 15:35:09 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,42 @@ void	write_line_to_pipe(int fd, char *line)
 {
 	write(fd, line, ft_strlen(line));
 	write(fd, "\n", 1);
+}
+
+int	check_delimeter(char *line, char *clean_delim)
+{
+	if (is_delimiter_reached(line, clean_delim))
+	{
+		free_line(line);
+		return (1);
+	}
+	return (0);
+}
+
+void	read_heredoc_content(int pipe_fd, char *delimiter,
+	char *clean_delim)
+{
+	char			*line;
+	char			*expanded;
+	t_signal_state	*state;
+
+	state = get_signal_state();
+	while (1)
+	{
+		if (state->received == SIGINT)
+			break ;
+		line = read_line_with_prompt("> ");
+		if (state->received == SIGINT)
+		{
+			free_line(line);
+			break ;
+		}
+		if (check_delimeter(line, clean_delim))
+			break ;
+		expanded = get_expanded_line(line, delimiter);
+		write_line_to_pipe(pipe_fd, expanded);
+		if (expanded != line)
+			free(expanded);
+		free(line);
+	}
 }

@@ -12,34 +12,55 @@
 
 #include "../../include/shell.h"
 
+static int	wait_child_status(pid_t pid)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	setup_signals_interactive();
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (1);
+}
+
+static int	fork_and_execute_node(t_ast_node *node, t_env *env)
+{
+	pid_t	pid;
+
+	setup_signals_executing();
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), 1);
+	if (pid == 0)
+	{
+		restore_signals_default();
+		child_execute_node(node, env);
+	}
+	return (wait_child_status(pid));
+}
+
 int	execute_logical_and(t_ast_node *left, t_ast_node *right, t_env *env)
 {
 	int	left_status;
-	int	right_status;
 
 	if (!left || !right)
 		return (1);
-	left_status = execute_ast(left, env);
+	left_status = fork_and_execute_node(left, env);
 	if (left_status == 0)
-	{
-		right_status = execute_ast(right, env);
-		return (right_status);
-	}
+		return (fork_and_execute_node(right, env));
 	return (left_status);
 }
 
 int	execute_logical_or(t_ast_node *left, t_ast_node *right, t_env *env)
 {
 	int	left_status;
-	int	right_status;
 
 	if (!left || !right)
 		return (1);
-	left_status = execute_ast(left, env);
+	left_status = fork_and_execute_node(left, env);
 	if (left_status != 0)
-	{
-		right_status = execute_ast(right, env);
-		return (right_status);
-	}
+		return (fork_and_execute_node(right, env));
 	return (left_status);
 }
