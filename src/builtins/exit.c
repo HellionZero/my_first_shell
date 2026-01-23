@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:51:29 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 17:20:34 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:58:27 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,21 @@ static void	print_numeric(char *cmd, t_env *env)
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	env->should_exit = 1;
-	env->exit_code = 2;
+	env->exit_code = 255;
 }
 
-static unsigned char	return_exit_code(int code)
+static int	return_exit_code(char **str, t_env *env)
 {
-	if (code < 0)
-		return ((unsigned char)(256 + (code % 256)));
-	return ((unsigned char)(code % 256));
+	int	code;
+
+	if (!str || !str[1])
+		code = 0;
+	else if (is_numeric(str[1]))
+		code = ft_atoi(str[1]);
+	else
+		print_numeric(str[1], env);
+	ft_free_split(str);
+	return (code % 256);
 }
 
 static int	check_valid_args(int argc, char **args)
@@ -52,25 +59,22 @@ static int	check_valid_args(int argc, char **args)
 
 int	builtin_exit(char **args, t_env *env)
 {
-	int	exit_code;
 	int	arg_count;
 	int	valid;
 
 	valid = 1;
-	exit_code = env->last_exit_status;
 	arg_count = count_args(args);
 	ft_printf("exit\n");
 	if (arg_count == 1)
 	{
 		env->should_exit = 1;
-		env->exit_code = return_exit_code(exit_code);
+		env->exit_code = return_exit_code(args, env);
 		return (0);
 	}
 	valid = check_valid_args(count_args(args), args);
 	if (!valid)
 		return (0);
-	exit_code = ft_atoi(args[1]);
 	env->should_exit = 1;
-	env->exit_code = return_exit_code(exit_code);
+	env->exit_code = return_exit_code(args, env);
 	return (0);
 }

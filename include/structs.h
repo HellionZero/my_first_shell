@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:10:09 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 16:49:43 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:15:37 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_exec_context	t_exec_context;
 typedef struct s_signal_state	t_signal_state;
 typedef struct sigaction		t_sigaction;
 typedef struct stat				t_stat;
+typedef struct s_pipe_pids		t_pipe_pids;
 
 struct	s_signal_state {
 	volatile sig_atomic_t	in_heredoc;
@@ -94,6 +95,12 @@ struct s_exec_context
 	t_ast_node			*tree_root;
 	t_token				*tokens;
 	t_env				*env;
+}	;
+
+struct s_pipe_pids
+{
+	pid_t	left;
+	pid_t	right;
 }	;
 
 #endif

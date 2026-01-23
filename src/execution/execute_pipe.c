@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:56:26 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 16:53:53 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:15:20 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,32 @@ static int	wait_both_children(pid_t pid_left, pid_t pid_right)
 	return (1);
 }
 
+static void	setup_children(int *pipe_fds, t_ast_node *node,
+				t_env *env, t_pipe_pids *pids)
+{
+	pids->left = fork();
+	if (pids->left == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if (pids->left == 0)
+		setup_left_child(pipe_fds, node->left, env);
+	pids->right = fork();
+	if (pids->right == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if (pids->right == 0)
+		setup_right_child(pipe_fds, node->right, env);
+}
+
 int	execute_pipe(t_ast_node *node, t_env *env)
 {
-	pid_t	pid_left;
-	pid_t	pid_right;
-	int		pipe_fds[2];
-	int		old_in_pipeline;
+	t_pipe_pids		pids;
+	int				pipe_fds[2];
+	int				old_in_pipeline;
 
 	old_in_pipeline = env->in_pipeline;
 	env->in_pipeline = 1;
@@ -60,18 +80,9 @@ int	execute_pipe(t_ast_node *node, t_env *env)
 		perror("pipe");
 		return (1);
 	}
-	pid_left = fork();
-	if (pid_left == -1)
-		return (perror("fork"), 1);
-	if (pid_left == 0)
-		setup_left_child(pipe_fds, node->left, env);
-	pid_right = fork();
-	if (pid_right == -1)
-		return (perror("fork"), 1);
-	if (pid_right == 0)
-		setup_right_child(pipe_fds, node->right, env);
+	setup_children(pipe_fds, node, env, &pids);
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
 	env->in_pipeline = old_in_pipeline;
-	return (wait_both_children(pid_left, pid_right));
+	return (wait_both_children(pids.left, pids.right));
 }
