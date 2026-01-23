@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:56:26 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/08 19:04:57 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:53:53 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ int	execute_pipe(t_ast_node *node, t_env *env)
 	pid_t	pid_left;
 	pid_t	pid_right;
 	int		pipe_fds[2];
+	int		old_in_pipeline;
 
+	old_in_pipeline = env->in_pipeline;
+	env->in_pipeline = 1;
 	if (!node || !node->left || !node->right)
 		return (1);
 	setup_signals_executing();
@@ -69,5 +72,6 @@ int	execute_pipe(t_ast_node *node, t_env *env)
 		setup_right_child(pipe_fds, node->right, env);
 	close(pipe_fds[0]);
 	close(pipe_fds[1]);
+	env->in_pipeline = old_in_pipeline;
 	return (wait_both_children(pid_left, pid_right));
 }

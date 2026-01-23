@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:51:11 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 14:10:30 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:54:12 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int	builtin_echo(char **args, t_env *env)
 	}
 	while (args[i])
 	{
-		ft_printf("%s", args[i]);
+		ft_putstr(args[i]);
 		if (args[i + 1])
-			ft_printf(" ");
+			ft_putstr(" ");
 		i++;
 	}
 	if (newline)

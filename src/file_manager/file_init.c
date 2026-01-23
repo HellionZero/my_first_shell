@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 16:15:39 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/08 15:44:48 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 14:32:35 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*check_direct_path(char *cmd)
 	if (ft_strchr(cmd, '/'))
 	{
 		if (is_directory(cmd))
-			return (NULL);
+			return ((char *)-1);
 		if (stat(cmd, &path_stat) == 0)
 		{
 			if (validate_executable(cmd))

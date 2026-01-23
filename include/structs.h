@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:10:09 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/19 14:44:17 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:49:43 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ struct s_env
 	int					last_exit_status;
 	int					should_exit;
 	int					exit_code;
+	int					in_pipeline;
 }	;
 
 struct s_exec_context

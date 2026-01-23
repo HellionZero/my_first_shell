@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 15:52:08 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/09 19:33:26 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 14:43:35 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	apply_redir_in(t_redirect *redir)
 	fd = open(redir->file, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_printf("minishell: %s: ", redir->file);
-		perror("");
+		perror(redir->file);
 		return (0);
 	}
 	dup2(fd, STDIN_FILENO);
@@ -35,8 +34,7 @@ int	apply_redir_out(t_redirect *redir)
 	fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		ft_printf("minishell: %s: ", redir->file);
-		perror("");
+		perror(redir->file);
 		return (0);
 	}
 	dup2(fd, STDOUT_FILENO);
@@ -51,8 +49,7 @@ int	apply_append(t_redirect *redir)
 	fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		ft_printf("minishell: %s: ", redir->file);
-		perror("");
+		perror(redir->file);
 		return (0);
 	}
 	dup2(fd, STDOUT_FILENO);

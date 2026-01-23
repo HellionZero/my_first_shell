@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:54:59 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/19 15:00:16 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:01:23 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@ static int	wait_child(pid_t pid)
 	if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
 	return (1);
+}
+
+static int	is_directory_error(char *path)
+{
+	struct stat	st;
+
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		return (126);
+	}
+	return (-1);
 }
 
 static int	fork_and_execute(t_command *cmd, char *executable, t_env *env)
@@ -48,23 +61,31 @@ int	execute_command(t_command *cmd, t_env *env)
 {
 	char	*executable;
 	int		handled;
+	int		dir_code;
 
+	if (!cmd->args[0] || cmd->args[0][0] == '\0')
+		return (0);
 	handled = empty_handle_manager(cmd, env);
 	if (handled != -1)
 		return (handled);
 	if (is_builtin(cmd->args[0]) && cmd->redirects)
 		return (execute_redirects(cmd, -1, env));
-	if (is_builtin(cmd->args[0]))
+	if (is_builtin(cmd->args[0]) && !env->in_pipeline)
 		return (execute_builtin(cmd->args, env));
-	if (is_directory(cmd->args[0]))
-	{
-		ft_printf("%s: is a directory\n", cmd->args[0]);
-		return (126);
-	}
 	executable = define_executable(cmd, env);
 	if (executable == (char *)-1)
 		return (126);
 	if (!executable)
+	{
+		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		return (127);
+	}
+	dir_code = is_directory_error(executable);
+	if (dir_code != -1)
+	{
+		free(executable);
+		return (dir_code);
+	}
 	return (fork_and_execute(cmd, executable, env));
 }

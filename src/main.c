@@ -33,6 +33,8 @@ static void	process_input(char *input, t_env *env)
 		print_ast(tree);
 	status = execute_ast(tree, env);
 	env->last_exit_status = status;
+	if (!env->should_exit)
+		env->exit_code = status;
 	set_exit_status(status);
 	node_free(tree);
 	token_list_free(tokens);

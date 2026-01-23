@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:23:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 18:31:20 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 14:41:22 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../lib/libft/libft.h"

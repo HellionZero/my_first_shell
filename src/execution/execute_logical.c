@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:57:22 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 14:46:07 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 13:41:04 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	fork_and_execute_node(t_ast_node *node, t_env *env)
 	{
 		restore_signals_default();
 		child_execute_node(node, env);
+		exit(EXIT_FAILURE);
 	}
 	return (wait_child_status(pid));
 }
