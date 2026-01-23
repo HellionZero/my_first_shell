@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:25:14 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 16:40:02 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:27:22 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	child_execute_builtin(t_command *cmd, t_env *env)
 static void	handle_exec_error(char *cmd)
 {
 	if (errno == EPIPE)
+	{
+		perror("Broken pipe");
 		return ;
+	}
 	if (errno == ENOEXEC)
 	{
 		if (!ft_strchr(cmd, '/'))

@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:54:59 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 17:01:23 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:33:14 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,13 @@ int	execute_command(t_command *cmd, t_env *env)
 		return (126);
 	if (!executable)
 	{
-		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		if (ft_strchr(cmd->args[0], '/'))
+			perror(cmd->args[0]);
+		else
+		{
+			ft_putstr_fd(cmd->args[0], STDERR_FILENO);
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		}
 		return (127);
 	}
 	dir_code = is_directory_error(executable);
