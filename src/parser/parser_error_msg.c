@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 14:13:47 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/11 16:48:54 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 16:07:14 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	parse_error_command(char *msg, t_command *cmd)
 
 void	empty_command_error(t_command *cmd)
 {
-	ft_putstr_fd("minishell: syntax error: empty command\n", STDERR_FILENO);
-	set_exit_status(2);
+	set_exit_status(0);
 	command_free(cmd);
 }
 

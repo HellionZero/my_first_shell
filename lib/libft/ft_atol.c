@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file.h                                             :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/06 16:16:30 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/26 15:47:02 by lsarraci         ###   ########.fr       */
+/*   Created: 2026/01/26 14:15:19 by lsarraci          #+#    #+#             */
+/*   Updated: 2026/01/26 15:26:08 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILE_H
-# define FILE_H
+#include "libft.h"
 
-# include "structs.h"
+long	ft_atol(const char *str)
+{
+	int		i;
+	long	nbr;
+	int		signal;
 
-/* ---------------   Path Management  ----------------------*/
-char	*find_executable(char *cmd, t_env *env);
-char	**get_default_path(t_env *env);
-
-/* ---------------   File Utilities  -----------------------*/
-int		is_directory(const char *path);
-int		is_directory_error(char *path);
-int		validate_executable(char *path);
-
-#endif
+	i = 0;
+	nbr = 0;
+	signal = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			signal = 1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		nbr = 10 * nbr + (str[i] - '0');
+		i++;
+	}
+	if (signal)
+		return (-nbr);
+	return (nbr);
+}

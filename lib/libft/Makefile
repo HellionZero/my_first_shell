@@ -6,7 +6,7 @@
 #    By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/12 17:38:39 by lsarraci          #+#    #+#              #
-#    Updated: 2026/01/06 17:37:43 by lsarraci         ###   ########.fr        #
+#    Updated: 2026/01/26 14:17:45 by lsarraci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ RF = rm -f
 CFLAGS = -Wall -Werror -Wextra
 
 SRC = ft_atoi.c \
+		ft_atol.c \
 		ft_bzero.c \
 		ft_calloc.c \
 		ft_free_split.c \

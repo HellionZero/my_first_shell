@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:51:29 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 19:08:08 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 16:10:51 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	return_exit_code(char **str)
 	if (!str || !str[1])
 		code = 0;
 	else if (is_numeric_arg(str[1]))
-		code = ft_atoi(str[1]);
+		code = ft_atol(str[1]);
 	else
 		code = 255;
 	return (code % 256);
@@ -66,6 +66,7 @@ int	builtin_exit(char **args, t_env *env)
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		env->should_exit = 0;
 		env->exit_code = 1;
+		set_exit_status(1);
 		return (1);
 	}
 	if (arg_count > 1 && !is_numeric_arg(args[1]))
@@ -73,11 +74,13 @@ int	builtin_exit(char **args, t_env *env)
 		return_numeric_error(args[1]);
 		env->should_exit = 1;
 		env->exit_code = 255;
+		set_exit_status(255);
 		return (255);
 	}
 	exit_code = return_exit_code(args);
 	env->should_exit = 1;
 	env->exit_code = exit_code;
 	ft_printf("terminated with exit code: %d\n", exit_code);
+	set_exit_status(exit_code);
 	return (exit_code);
 }

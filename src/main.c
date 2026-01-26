@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:22:34 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 19:13:26 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 16:56:47 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ static void	process_input(char *input, t_env *env)
 	if (is_debug_enabled())
 		print_ast(tree);
 	status = execute_ast(tree, env);
-	env->last_exit_status = status;
 	if (!env->should_exit)
 		env->exit_code = status;
-	set_exit_status(status);
+	set_exit_status(env->exit_code);
 	node_free(tree);
 	token_list_free(tokens);
 }
@@ -94,5 +93,6 @@ int	main(int argc, char **argv, char **envp)
 	rl_clear_history();
 	cleanup_shell(env);
 	reset_shell_env();
-	return (exit_code);
+	set_exit_status(exit_code);
+	return (env->exit_code);
 }
