@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 15:25:14 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/26 16:43:32 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 17:02:03 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,12 @@ void	child_execute_builtin(t_command *cmd, t_env *env)
 
 static void	handle_exec_error(char *cmd)
 {
-	       if (errno == EPIPE)
-	       {
-		       ft_putstr_fd(": Broken pipe\n", STDERR_FILENO);
-		       return ;
-	       }
-	if (errno == ENOEXEC)
+	if (errno == EPIPE)
 	{
-		if (!ft_strchr(cmd, '/'))
-		{
-			ft_putstr_fd(cmd, STDERR_FILENO);
-			ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		}
-		else
-			perror("Exec format error");
+		ft_putstr_fd(": Broken pipe\n", STDERR_FILENO);
+		return ;
 	}
-	if (errno == ENOENT)
+	if (errno == ENOEXEC || errno == ENOENT)
 	{
 		if (!ft_strchr(cmd, '/'))
 		{
@@ -57,7 +47,10 @@ static void	handle_exec_error(char *cmd)
 			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		}
 		else
-			perror(cmd);
+		{
+			ft_putstr_fd(cmd, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		}
 		return ;
 	}
 	perror(cmd);

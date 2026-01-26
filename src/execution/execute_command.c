@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:54:59 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/26 16:26:11 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 17:10:28 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int	execute_command(t_command *cmd, t_env *env)
 {
 	char	*executable;
 	int		handled;
-	int		dir_code;
 	int		command_code;
 
 	if (!cmd->args[0] || cmd->args[0][0] == '\0')
@@ -108,13 +107,10 @@ int	execute_command(t_command *cmd, t_env *env)
 	command_code = set_command_code(cmd, &executable);
 	if (command_code != 1)
 		return (command_code);
-	dir_code = is_directory_error(executable);
-	if (command_code != 1 || dir_code != -1)
+	if (is_directory_error(executable) == 126)
 	{
-		if (dir_code != -1)
-			command_code = dir_code;
 		free(executable);
-		return (command_code);
+		return (126);
 	}
 	return (fork_and_execute(cmd, executable, env));
 }

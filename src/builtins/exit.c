@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:51:29 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/26 16:10:51 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 18:00:19 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,12 @@ static int	is_numeric_arg(char *str)
 
 static int	return_exit_code(char **str)
 {
-	int	code;
-
-	code = 0;
 	if (!str || !str[1])
-		code = 0;
+		return (0);
 	else if (is_numeric_arg(str[1]))
-		code = ft_atol(str[1]);
+		return ((unsigned char)ft_atoi(str[1]) % 256);
 	else
-		code = 255;
-	return (code % 256);
+		return (255);
 }
 
 static void	return_numeric_error(char *arg)
@@ -51,6 +47,28 @@ static void	return_numeric_error(char *arg)
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(arg, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+}
+
+static int	check_args(int argc, char **args, t_env *env)
+{
+	if (argc > 2)
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
+		env->should_exit = 0;
+		env->exit_code = 1;
+		set_exit_status(1);
+		return (1);
+	}
+	if (argc > 1 && !is_numeric_arg(args[1]))
+	{
+		if (args[1])
+			return_numeric_error(args[1]);
+		env->should_exit = 1;
+		env->exit_code = 255;
+		set_exit_status(255);
+		return (255);
+	}
+	return (0);
 }
 
 int	builtin_exit(char **args, t_env *env)
@@ -61,26 +79,12 @@ int	builtin_exit(char **args, t_env *env)
 	arg_count = count_args(args);
 	exit_code = 0;
 	ft_printf("exit\n");
-	if (arg_count > 2)
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
-		env->should_exit = 0;
-		env->exit_code = 1;
-		set_exit_status(1);
-		return (1);
-	}
-	if (arg_count > 1 && !is_numeric_arg(args[1]))
-	{
-		return_numeric_error(args[1]);
-		env->should_exit = 1;
-		env->exit_code = 255;
-		set_exit_status(255);
-		return (255);
-	}
+	if (check_args(arg_count, args, env))
+		return (env->exit_code);
 	exit_code = return_exit_code(args);
 	env->should_exit = 1;
 	env->exit_code = exit_code;
-	ft_printf("terminated with exit code: %d\n", exit_code);
 	set_exit_status(exit_code);
+	ft_printf("[DEBUG] builtin_exit: env->exit_code = %d\n", env->exit_code);
 	return (exit_code);
 }
