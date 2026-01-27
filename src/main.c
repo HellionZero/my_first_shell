@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:22:34 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/26 17:57:42 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 16:00:07 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,5 @@ int	main(int argc, char **argv, char **envp)
 	cleanup_shell(env);
 	reset_shell_env();
 	set_exit_status(exit_code);
-	ft_printf("[DEBUG] main: env->exit_code = %d\n", env->exit_code);
-	return (env->exit_code);
+	return (exit_code);
 }

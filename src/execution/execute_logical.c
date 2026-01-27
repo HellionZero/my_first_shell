@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:57:22 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 13:41:04 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:15:08 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ static int	fork_and_execute_node(t_ast_node *node, t_env *env)
 {
 	pid_t	pid;
 
+	if (node && node->type == NODE_COMMAND && node->cmd
+		&& node->cmd->args && node->cmd->args[0])
+	{
+		if (is_env_builtin(node->cmd->args[0]))
+			return (execute_command(node->cmd, env));
+	}
 	setup_signals_executing();
 	pid = fork();
 	if (pid == -1)

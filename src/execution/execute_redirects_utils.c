@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 15:52:08 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 14:43:35 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 18:32:48 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	apply_redir_in(t_redirect *redir)
 		perror(redir->file);
 		return (0);
 	}
-	dup2(fd, STDIN_FILENO);
+	if (fd != STDIN_FILENO)
+		dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (1);
 }
@@ -37,7 +38,8 @@ int	apply_redir_out(t_redirect *redir)
 		perror(redir->file);
 		return (0);
 	}
-	dup2(fd, STDOUT_FILENO);
+	if (fd != STDOUT_FILENO)
+		dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (1);
 }
@@ -52,7 +54,8 @@ int	apply_append(t_redirect *redir)
 		perror(redir->file);
 		return (0);
 	}
-	dup2(fd, STDOUT_FILENO);
+	if (fd != STDOUT_FILENO)
+		dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (1);
 }
@@ -64,7 +67,8 @@ int	apply_heredoc(t_redirect *redir)
 		ft_printf("minishell: heredoc error\n");
 		return (0);
 	}
-	dup2(redir->heredoc_fd, STDIN_FILENO);
+	if (redir->heredoc_fd != STDIN_FILENO)
+		dup2(redir->heredoc_fd, STDIN_FILENO);
 	close(redir->heredoc_fd);
 	redir->heredoc_fd = -1;
 	return (1);

@@ -33,7 +33,7 @@ test_heredoc() {
     print_test "$description"
     
     # Run with DEBUG=1 to get AST output showing heredoc info
-    output=$(echo -e "$input\nexit" | DEBUG=1 ../my_shell 2>&1 | grep -A 30 "=== ABSTRACT SYNTAX TREE ===" | head -n 20)
+    output=$(echo -e "$input\nexit" | DEBUG=1 ../minishell 2>&1 | grep -A 30 "=== ABSTRACT SYNTAX TREE ===" | head -n 20)
     
     if echo "$output" | grep -q "$expected"; then
         print_pass
@@ -52,7 +52,7 @@ test_heredoc_error() {
     print_test "$description"
     
     # Should produce syntax error
-    output=$(echo -e "$input\nexit" | ../my_shell 2>&1)
+    output=$(echo -e "$input\nexit" | ../minishell 2>&1)
     
     if echo "$output" | grep -qi "syntax error\|parse error"; then
         print_pass

@@ -7,7 +7,7 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-SHELL="../my_shell"
+SHELL="../minishell"
 PASSED=0
 FAILED=0
 
@@ -17,7 +17,7 @@ test_command() {
     local expected="$3"
     
     output=$(echo -e "$input\nexit" | NO_COLOR=1 $SHELL 2>&1 | \
-        sed 's/\[my_shell\]> //g' | \
+        sed 's/\[minishell\]> //g' | \
         grep -v "^exit$" | \
         grep -v "^$")
     

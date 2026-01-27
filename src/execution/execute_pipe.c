@@ -6,83 +6,100 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:56:26 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 18:15:20 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 18:44:59 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-static void	setup_left_child(int *pipe_fds, t_ast_node *node, t_env *env)
+static int	count_pipeline_cmds(t_ast_node *node)
 {
-	close(pipe_fds[0]);
-	dup2(pipe_fds[1], STDOUT_FILENO);
-	close(pipe_fds[1]);
-	child_execute_node(node, env);
-}
+	int	count;
 
-static void	setup_right_child(int *pipe_fds, t_ast_node *node, t_env *env)
-{
-	close(pipe_fds[1]);
-	dup2(pipe_fds[0], STDIN_FILENO);
-	close(pipe_fds[0]);
-	child_execute_node(node, env);
-}
-
-static int	wait_both_children(pid_t pid_left, pid_t pid_right)
-{
-	int	status_left;
-	int	status_right;
-
-	waitpid(pid_left, &status_left, 0);
-	waitpid(pid_right, &status_right, 0);
-	setup_signals_interactive();
-	if (WIFEXITED(status_right))
-		return (WEXITSTATUS(status_right));
-	if (WIFSIGNALED(status_right))
-		return (128 + WTERMSIG(status_right));
-	return (1);
-}
-
-static void	setup_children(int *pipe_fds, t_ast_node *node,
-				t_env *env, t_pipe_pids *pids)
-{
-	pids->left = fork();
-	if (pids->left == -1)
+	count = 0;
+	while (node && node->type == NODE_PIPE)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		count++;
+		node = node->left;
 	}
-	if (pids->left == 0)
-		setup_left_child(pipe_fds, node->left, env);
-	pids->right = fork();
-	if (pids->right == -1)
+	return (count + 1);
+}
+
+static void	fill_pipeline_cmds(t_ast_node *node, t_ast_node **cmds, int n)
+{
+	int	i;
+
+	i = n - 1;
+	while (node && node->type == NODE_PIPE)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		cmds[i--] = node->right;
+		node = node->left;
 	}
-	if (pids->right == 0)
-		setup_right_child(pipe_fds, node->right, env);
+	cmds[0] = node;
+}
+
+static int	(*prepare_pipes(int n_cmds))[2]
+{
+	int	(*pipes)[2];
+	int	i;
+
+	pipes = (int (*)[2])malloc(sizeof(int[2]) * (n_cmds - 1));
+	i = 0;
+	while (i < n_cmds - 1)
+	{
+		if (pipe(pipes[i]) == -1)
+		{
+			perror("pipe");
+			exit(EXIT_FAILURE);
+		}
+		i++;
+	}
+	return (pipes);
 }
 
 int	execute_pipe(t_ast_node *node, t_env *env)
 {
-	t_pipe_pids		pids;
-	int				pipe_fds[2];
-	int				old_in_pipeline;
+	int			n_cmds;
+	t_ast_node	**cmds;
+	int			(*pipes)[2];
+	pid_t		*pids;
+	int			i;
+	int			status;
 
-	old_in_pipeline = env->in_pipeline;
-	env->in_pipeline = 1;
-	if (!node || !node->left || !node->right)
-		return (1);
-	setup_signals_executing();
-	if (pipe(pipe_fds) == -1)
+	n_cmds = count_pipeline_cmds(node);
+	cmds = (t_ast_node **)malloc(sizeof(t_ast_node *) * n_cmds);
+	fill_pipeline_cmds(node, cmds, n_cmds);
+	pipes = prepare_pipes(n_cmds);
+	pids = (pid_t *)malloc(sizeof(pid_t) * n_cmds);
+	i = 0;
+	while (i < n_cmds)
 	{
-		perror("pipe");
-		return (1);
+		pids[i] = fork();
+		if (pids[i] == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		if (pids[i] == 0)
+		{
+			if (i > 0)
+				dup2(pipes[i - 1][0], STDIN_FILENO);
+			if (i < n_cmds - 1)
+				dup2(pipes[i][1], STDOUT_FILENO);
+			close_pipes(pipes, n_cmds - 1);
+			if (is_pure_redirect_command_node(cmds[i]))
+			{
+				ensure_redirect_files_created(cmds[i]->cmd);
+				child_cleanup_and_exit(env, 0);
+			}
+			child_execute_command_node(cmds[i], env);
+			exit(EXIT_FAILURE);
+		}
+		i++;
 	}
-	setup_children(pipe_fds, node, env, &pids);
-	close(pipe_fds[0]);
-	close(pipe_fds[1]);
-	env->in_pipeline = old_in_pipeline;
-	return (wait_both_children(pids.left, pids.right));
+	close_pipes(pipes, n_cmds - 1);
+	status = wait_pipeline_children(pids, n_cmds);
+	free(pipes);
+	free(cmds);
+	return (status);
 }

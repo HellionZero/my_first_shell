@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:35:01 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/26 17:20:39 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 18:12:56 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	execute_child_pipes(t_ast_node *node, t_env *env, int *exit_code)
 	return (*exit_code);
 }
 
-void	child_execute_logical_or_pipe(t_ast_node *node, t_env *env)
+static void	child_execute_logical_or_pipe(t_ast_node *node, t_env *env)
 {
 	int	exit_code;
 
@@ -50,21 +50,6 @@ void	child_execute_logical_or_pipe(t_ast_node *node, t_env *env)
 		execute_child_pipes(node, env, &exit_code);
 	else
 		child_cleanup_and_exit(env, 1);
-}
-
-void	child_execute_command_node(t_ast_node *node, t_env *env)
-{
-	if (!node || !node->cmd)
-		child_cleanup_and_exit(env, 1);
-	if (node->cmd->redirects)
-	{
-		if (!apply_redirects(node->cmd))
-			child_cleanup_and_exit(env, 1);
-	}
-	if (is_builtin(node->cmd->args[0]))
-		child_execute_builtin(node->cmd, env);
-	else
-		child_execute_command(node->cmd, env);
 }
 
 void	child_execute_node(t_ast_node *node, t_env *env)

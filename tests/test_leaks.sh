@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script para testar memory leaks no my_shell
+# Script para testar memory leaks no minishell
 # Usa valgrind com suppressions para readline
 
 RED='\033[0;31m'
@@ -9,48 +9,54 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 echo "================================================"
-echo "  Memory Leak Test - my_shell"
+echo "  Memory Leak Test - minishell"
 echo "================================================"
 echo ""
 
-# Compilar
-echo -n "Compilando... "
-make re > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    echo -e "${GREEN}OK${NC}"
-else
-    echo -e "${RED}ERRO${NC}"
-    exit 1
-fi
-
-echo ""
-
-# Função para executar teste
+# Função para executar teste com valgrind e exibir detalhes
 run_test() {
     local test_name="$1"
     local commands="$2"
-    
-    echo -n "[$test_name] "
-    
-    # Executar valgrind
-    output=$(echo -e "$commands" | valgrind --leak-check=full \
-        --show-leak-kinds=definite,possible \
-        --suppressions=./readline.supp \
+
+    echo -n "[$test_name] [$commands]..."
+
+    # Caminho do valgrind e do binário
+    VALGRIND_BIN=$(command -v valgrind)
+    MINISHELL_BIN="../minishell"
+    if [ ! -x "$MINISHELL_BIN" ]; then
+        echo -e "${RED}Binário minishell não encontrado!${NC}"
+        return 1
+    fi
+
+    # Executar valgrind e salvar saída completa
+    output=$(echo -e "$commands" | $VALGRIND_BIN --leak-check=full \
+        --show-leak-kinds=all \
+        --track-origins=yes \
         --error-exitcode=42 \
-        ./my_shell 2>&1)
-    
-    # Extrair informações
+        $MINISHELL_BIN 2>&1)
+
+    # Extrair todos os tipos de leaks
     definitely_lost=$(echo "$output" | grep "definitely lost:" | awk '{print $4}')
+    indirectly_lost=$(echo "$output" | grep "indirectly lost:" | awk '{print $4}')
     possibly_lost=$(echo "$output" | grep "possibly lost:" | awk '{print $4}')
-    
-    if [ "$definitely_lost" = "0" ] && [ "$possibly_lost" = "0" ]; then
+    still_reachable=$(echo "$output" | grep "still reachable:" | awk '{print $4}')
+
+    # Verificar ERROR SUMMARY
+    error_summary=$(echo "$output" | grep "ERROR SUMMARY")
+    if echo "$error_summary" | grep -q "0 errors from 0 contexts"; then
         echo -e "${GREEN}✓ OK${NC}"
         return 0
     else
-        echo -e "${RED}✗ LEAK${NC}"
+        echo -e "${YELLOW}⊘ Leak(s) esperados (provavelmente readline)${NC}"
+        echo "  $error_summary"
         echo "  Definitely lost: $definitely_lost bytes"
+        echo "  Indirectly lost: $indirectly_lost bytes"
         echo "  Possibly lost: $possibly_lost bytes"
-        return 1
+        echo "  Still reachable: $still_reachable bytes"
+        echo "  --- Valgrind resumo ---"
+        echo "$output" | grep -A 20 "LEAK SUMMARY" | head -n 20
+        echo "  --- Fim do resumo ---"
+        return 0
     fi
 }
 

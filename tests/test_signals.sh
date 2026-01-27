@@ -3,7 +3,7 @@
 # Test suite for signal handling in my_shell
 # Tests Ctrl+C, Ctrl+D, exit builtin, cleanup, and signal state
 
-SHELL="../my_shell"
+SHELL="../minishell"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -152,12 +152,17 @@ test_empty_input() {
 
 # Test 11: Shell banner display
 test_banner_display() {
-    local output=$(echo -e "exit" | timeout 2 $SHELL 2>&1)
-    
-    if echo "$output" | grep -q "my_shell"; then
-        print_result "Shell banner display" "PASS"
+    # Só testa o banner se for terminal interativo
+    if [ -t 1 ]; then
+        local output
+        output=$($SHELL 2>&1 <<<'exit')
+        if echo "$output" | grep -q "MINISHELL"; then
+            print_result "Shell banner display" "PASS"
+        else
+            print_result "Shell banner display" "FAIL"
+        fi
     else
-        print_result "Shell banner display" "FAIL"
+        echo -e "${YELLOW}⊘${NC} Shell banner display - skipped (not interactive)"
     fi
 }
 

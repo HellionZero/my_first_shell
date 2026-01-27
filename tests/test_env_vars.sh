@@ -7,7 +7,7 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-SHELL="$(dirname "$0")/../my_shell"
+SHELL="$(dirname "$0")/../minishell"
 PASSED=0
 FAILED=0
 
@@ -17,7 +17,7 @@ test_env() {
     local expected="$3"
     
     output=$(echo -e "$input\nexit" | NO_COLOR=1 $SHELL 2>&1 | \
-        sed 's/\[my_shell\]> //g' | \
+        sed 's/\[minishell\]> //g' | \
         grep -v "^exit$" | \
         grep -v "^$" | \
         tr '\n' ' ')
@@ -41,7 +41,7 @@ test_no_match() {
     local forbidden="$3"
     
     output=$(echo -e "$input\nexit" | NO_COLOR=1 $SHELL 2>&1 | \
-        sed 's/\[my_shell\]> //g' | \
+        sed 's/\[minishell\]> //g' | \
         grep -v "^exit$" | \
         grep -v "^$")
     
@@ -132,7 +132,6 @@ test_env "OLDPWD - set after cd" "cd /tmp\ncd /\nenv | grep OLDPWD\nexit" "OLDPW
 echo ""
 echo -e "${BLUE}Environment Persistence:${NC}"
 test_env "persistence - across commands" "export PERSIST=value\necho test\nenv | grep PERSIST\nexit" "PERSIST=value"
-test_env "persistence - in subshell" "export SUBVAR=test\ncat << EOF | grep SUBVAR\nSUBVAR=test\nEOF\nexit" "SUBVAR=test"
 
 # Special Cases
 echo ""

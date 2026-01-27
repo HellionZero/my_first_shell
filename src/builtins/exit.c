@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:51:29 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/26 18:00:19 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 18:24:13 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,5 @@ int	builtin_exit(char **args, t_env *env)
 	env->should_exit = 1;
 	env->exit_code = exit_code;
 	set_exit_status(exit_code);
-	ft_printf("[DEBUG] builtin_exit: env->exit_code = %d\n", env->exit_code);
 	return (exit_code);
 }

@@ -3,7 +3,7 @@
 # Test suite for signal state management functions
 # Tests the utility functions in shell_signals.c
 
-SHELL="../my_shell"
+SHELL="../minishell"
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
@@ -64,10 +64,10 @@ test_empty_lines() {
 
 # Test 4: Cleanup happens on normal exit
 test_cleanup_normal() {
-    local before=$(ps aux | grep -c "[m]y_shell")
+    local before=$(ps aux | grep -c "[m]inishell")
     echo -e "exit" | timeout 2 $SHELL >/dev/null 2>&1
     sleep 0.5
-    local after=$(ps aux | grep -c "[m]y_shell")
+    local after=$(ps aux | grep -c "[m]inishell")
     
     if [ "$before" -eq "$after" ]; then
         print_result "PASS" "Cleanup on normal exit (no zombie processes)"

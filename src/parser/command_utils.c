@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:30:00 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 15:07:56 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 16:43:57 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ int	is_valid_command(t_command *cmd)
 {
 	if (!cmd)
 		return (0);
-	if (cmd->args && cmd->args[0])
-		return (1);
-	if (cmd->redirects)
+	if ((cmd->args && cmd->args[0]) || cmd->redirects)
 		return (1);
 	return (0);
 }

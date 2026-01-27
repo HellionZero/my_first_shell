@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 17:50:56 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 16:54:28 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:50:35 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void		free_env(t_env *env);
 t_env_var	*create_env_node(char *key, char *value);
 void		free_env_node(t_env_var *node);
 void		free_env_list(t_env_var *list);
+t_env		*deep_copy_env(t_env *src);
 
 t_env_var	*env_get(t_env *env, char *key);
 void		env_set(t_env *env, char *key, char *value);

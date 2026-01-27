@@ -8,7 +8,7 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-SHELL_PATH="../my_shell"
+SHELL_PATH="../minishell"
 PASSED=0
 FAILED=0
 TOTAL=0
@@ -23,7 +23,7 @@ run_test() {
     
     # Executa o comando no shell e extrai o output
     mysh_full=$(echo -e "$command\nexit" | NO_COLOR=1 $SHELL_PATH 2>&1)
-    actual=$(echo "$mysh_full" | sed -n '1s/^[^>]*> //p' | sed 's/\[my_shell\]>.*//')
+        actual=$(echo "$mysh_full" | grep -v -e '^$' -e '^\[minishell\]>' | head -n1 | sed 's/exit$//')
     
     if [ "$actual" = "$expected" ]; then
         echo -e "${GREEN}✓${NC} $test_name"
@@ -48,8 +48,8 @@ compare_with_bash() {
     
     # Executa no myshell e extrai apenas o output do comando
     mysh_full=$(echo -e "$command\nexit" | NO_COLOR=1 $SHELL_PATH 2>&1)
-    # Remove tudo até o primeiro >, pega a linha, remove o próximo prompt
-    mysh_output=$(echo "$mysh_full" | sed -n '1s/^[^>]*> //p' | sed 's/\[my_shell\]>.*//')
+        # Extrai a primeira linha relevante do output
+        mysh_output=$(echo "$mysh_full" | grep -v -e '^$' -e '^\[minishell\]>' | head -n1 | sed 's/exit$//')
     
     if [ "$bash_output" = "$mysh_output" ]; then
         echo -e "${GREEN}✓${NC} $test_name"
@@ -57,7 +57,7 @@ compare_with_bash() {
     else
         echo -e "${RED}✗${NC} $test_name"
         echo -e "   ${YELLOW}Bash output:${NC}   '$bash_output'"
-        echo -e "   ${YELLOW}MyShell output:${NC} '$mysh_output'"
+        echo -e "   ${YELLOW}Minishell output:${NC} '$mysh_output'"
         FAILED=$((FAILED + 1))
     fi
 }

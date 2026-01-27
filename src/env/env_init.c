@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 17:54:58 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 16:49:47 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:49:08 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,27 @@ t_env	*init_env(char **envp)
 	}
 	increment_shlvl(env);
 	return (env);
+}
+
+t_env	*deep_copy_env(t_env *src)
+{
+	t_env		*copy;
+	t_env_var	*current;
+
+	if (!src)
+		return (NULL);
+	copy = malloc(sizeof(t_env));
+	if (!copy)
+		return (NULL);
+	copy->vars = NULL;
+	copy->last_exit_status = src->last_exit_status;
+	copy->should_exit = src->should_exit;
+	copy->exit_code = src->exit_code;
+	current = src->vars;
+	while (current)
+	{
+		env_set(copy, current->key, current->value);
+		current = current->next;
+	}
+	return (copy);
 }

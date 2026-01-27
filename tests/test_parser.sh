@@ -33,7 +33,7 @@ test_parser() {
     print_test "$description"
     
     # Run with DEBUG=1 to get AST output, then exit
-    output=$(echo -e "$input\nexit" | DEBUG=1 ../my_shell 2>&1 | grep -A 50 "=== ABSTRACT SYNTAX TREE ===" | head -n 30)
+    output=$(echo -e "$input\nexit" | DEBUG=1 ../minishell 2>&1 | grep -A 50 "=== ABSTRACT SYNTAX TREE ===" | head -n 30)
     
     if echo "$output" | grep -q "$expected"; then
         print_pass

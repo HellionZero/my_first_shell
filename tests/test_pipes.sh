@@ -40,11 +40,11 @@ test_pipe() {
     print_info "Command: $command"
     
     # Execute command in shell and capture output to file
-    echo -e "$command\nexit" | NO_COLOR=1 ../my_shell > /tmp/pipe_test_out.txt 2>&1
+    echo -e "$command\nexit" | NO_COLOR=1 ../minishell > /tmp/pipe_test_out.txt 2>&1
     
     # Extract only the output lines
     output=$(cat /tmp/pipe_test_out.txt | \
-        sed 's/\[my_shell\]> //g' | \
+        sed 's/\[minishell\]> //g' | \
         grep -v "^exit$" | \
         grep -v "^$" | \
         head -20)
@@ -191,12 +191,10 @@ test_pipe "ls -la .. | grep src" \
     "Pipe: ls -la | grep (with flags)" \
     "output" \
     "src"
-
-test_pipe "cat ../TODO.md | grep Phase" \
-    "Pipe: cat file | grep pattern" \
-    "output" \
-    "Phase"
-
+test_pipe "cat ../Makefile | grep CFLAGS | wc -l" \
+	"Pipe: cat | grep | wc -l (count lines)" \
+	"output" \
+	"2"
 echo ""
 echo "========================================="
 echo "         TEST SUMMARY"

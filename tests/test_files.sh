@@ -8,7 +8,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SHELL="$SCRIPT_DIR/../my_shell"
+SHELL="$SCRIPT_DIR/../minishell"
 PASSED=0
 FAILED=0
 TEST_DIR="/tmp/test_shell_files"
@@ -47,7 +47,7 @@ test_output() {
     local expected="$3"
     
     output=$(cd "$TEST_DIR" && echo -e "$input\nexit" | NO_COLOR=1 $SHELL 2>&1 | \
-        sed 's/\[my_shell\]> //g' | \
+        sed 's/\[minishell\]> //g' | \
         grep -v "^exit$" | \
         grep -v "^$")
     
@@ -76,13 +76,13 @@ setup
 echo -e "${BLUE}Basic File Creation:${NC}"
 test_file_op "create file with echo" "echo hello > file1.txt\nexit" "grep -q 'hello' $TEST_DIR/file1.txt"
 test_file_op "create file with cat" "cat > file2.txt << EOF\nline1\nline2\nEOF\nexit" "[ \$(cat $TEST_DIR/file2.txt | wc -l) -eq 2 ]"
-test_file_op "create empty file" "> empty.txt\nexit" "[ -f $TEST_DIR/empty.txt ] && [ ! -s $TEST_DIR/empty.txt ]"
+test_file_op "create empty file" "> empty.txt\nexit" "bash -c '> $TEST_DIR/empty_bash.txt'; [ -f $TEST_DIR/empty.txt ] && [ -f $TEST_DIR/empty_bash.txt ] && cmp -s $TEST_DIR/empty.txt $TEST_DIR/empty_bash.txt"
 
 # File Overwriting
 echo ""
 echo -e "${BLUE}File Overwriting:${NC}"
 test_file_op "overwrite file" "echo first > over.txt\necho second > over.txt\nexit" "grep -q 'second' $TEST_DIR/over.txt && [ \$(cat $TEST_DIR/over.txt | wc -l) -eq 1 ]"
-test_file_op "overwrite with empty" "echo data > over2.txt\n> over2.txt\nexit" "[ -f $TEST_DIR/over2.txt ] && [ ! -s $TEST_DIR/over2.txt ]"
+test_file_op "overwrite with empty" "echo data > over2.txt\n> over2.txt\nexit" "bash -c 'echo data > $TEST_DIR/over2_bash.txt; > $TEST_DIR/over2_bash.txt'; [ -f $TEST_DIR/over2.txt ] && [ -f $TEST_DIR/over2_bash.txt ] && cmp -s $TEST_DIR/over2.txt $TEST_DIR/over2_bash.txt"
 
 # File Appending
 echo ""

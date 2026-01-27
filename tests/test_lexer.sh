@@ -33,7 +33,7 @@ test_lexer() {
     print_test "$description"
     
     # Run with DEBUG=1 to get token output, then exit
-    output=$(echo -e "$input\nexit" | DEBUG=1 ../my_shell 2>&1 | grep -A 100 "=== TOKENS ===" | grep -v "=== TOKENS ===" | grep -v "=== ABSTRACT SYNTAX TREE ===" | head -n 50)
+    output=$(echo -e "$input\nexit" | DEBUG=1 ../minishell 2>&1 | grep -A 100 "=== TOKENS ===" | grep -v "=== TOKENS ===" | grep -v "=== ABSTRACT SYNTAX TREE ===" | head -n 50)
     
     if echo "$output" | grep -E -q "$expected"; then
         print_pass

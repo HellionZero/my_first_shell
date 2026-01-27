@@ -14,12 +14,12 @@ SUITES_FAILED=0
 
 echo ""
 echo "========================================="
-echo "    MY_SHELL - Complete Test Suite"
+echo "    MINISHELL - Complete Test Suite"
 echo "========================================="
 echo ""
 
 # Compile first
-echo -e "${BLUE}[1/7]${NC} Compiling my_shell..."
+echo -e "${BLUE}[1/7]${NC} Compiling minishell..."
 make -C .. > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
@@ -112,6 +112,10 @@ run_suite "File Operations Tests" "test_files.sh"
 echo -e "${BLUE}[16/16]${NC} Segfault Detection Tests"
 echo "========================================="
 run_suite "Segfault Tests" "test_segfault.sh"
+
+echo -e "${BLUE}[17/17]${NC} Memory Leak Tests"
+echo "========================================="
+run_suite "Memory Leak Tests" "test_leaks.sh"
 
 # Final summary
 echo ""

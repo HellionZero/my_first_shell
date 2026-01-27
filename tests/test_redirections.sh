@@ -9,7 +9,7 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-SHELL="$(cd .. && pwd)/my_shell"
+SHELL="$(cd .. && pwd)/minishell"
 PASSED=0
 FAILED=0
 TEST_DIR="/tmp/test_shell_redirects"

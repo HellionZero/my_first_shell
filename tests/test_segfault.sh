@@ -8,7 +8,7 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-SHELL="$(dirname "$0")/../my_shell"
+SHELL="$(dirname "$0")/../minishell"
 PASSED=0
 FAILED=0
 SEGFAULTS=0

@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:57:45 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/10 14:05:53 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:01:56 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,20 @@ int	is_env_builtin(char *command)
 
 int	close_and_exit(int fd_in, int fd_out, int ex_status)
 {
-	dup2(fd_in, 0);
-	dup2(fd_out, 1);
-	close(fd_in);
-	close(fd_out);
+	if (fd_in >= 0)
+		dup2(fd_in, 0);
+	if (fd_out >= 0)
+		dup2(fd_out, 1);
+	if (fd_in >= 0)
+		close(fd_in);
+	if (fd_out >= 0)
+		close(fd_out);
 	return (ex_status);
 }
 
 void	resolve_fd(int	*fd)
 {
-	if (*fd != -1 && *fd != STDIN_FILENO)
+	if (fd && *fd != -1 && *fd != STDIN_FILENO)
 	{
 		dup2(*fd, STDIN_FILENO);
 		close(*fd);
@@ -60,15 +64,16 @@ int	is_redirect_needed(t_command *cmd)
 {
 	t_redirect	*current;
 
-	if (!cmd)
+	if (!cmd || !cmd->redirects)
 		return (0);
 	current = cmd->redirects;
 	while (current)
 	{
-		if (current->type == TOKEN_REDIR_IN
-			|| current->type == TOKEN_REDIR_OUT
-			|| current->type == TOKEN_APPEND
-			|| current->type == TOKEN_HEREDOC)
+		if ((current->type == TOKEN_REDIR_IN
+				|| current->type == TOKEN_REDIR_OUT
+				|| current->type == TOKEN_APPEND
+				|| current->type == TOKEN_HEREDOC)
+			&& current->file != NULL)
 			return (1);
 		current = current->next;
 	}

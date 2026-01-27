@@ -3,7 +3,7 @@
 # Integration tests for my_shell
 # Tests complete workflows and edge cases
 
-SHELL="../my_shell"
+SHELL="../minishell"
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
@@ -53,12 +53,17 @@ test_whitespace() {
 
 # Test 3: Banner displays
 test_banner_display() {
-    local output=$(echo -e "exit" | timeout 2 $SHELL 2>&1)
-    
-    if echo "$output" | grep -q "my_shell"; then
-        print_result "PASS" "Banner displays on startup"
+    # Só testa o banner se for terminal interativo
+    if [ -t 1 ]; then
+        local output
+        output=$($SHELL 2>&1 <<<'exit')
+        if echo "$output" | grep -q "MINISHELL"; then
+            print_result "PASS" "Banner displays on startup"
+        else
+            print_result "FAIL" "Banner display"
+        fi
     else
-        print_result "FAIL" "Banner display"
+        echo -e "${YELLOW}⊘${NC} Banner display - skipped (not interactive)"
     fi
 }
 

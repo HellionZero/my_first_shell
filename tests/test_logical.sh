@@ -7,7 +7,7 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-SHELL="$(cd .. && pwd)/my_shell"
+SHELL="$(cd .. && pwd)/minishell"
 PASSED=0
 FAILED=0
 
@@ -18,7 +18,7 @@ test_logical() {
     
     # Get output in single line for pattern matching
     output=$(echo -e "$input\nexit" | NO_COLOR=1 $SHELL 2>&1 | \
-        sed 's/\[my_shell\]> //g' | \
+        sed 's/\[minishell\]> //g' | \
         grep -v "^exit$" | \
         grep -v "^$" | \
         tr '\n' ' ')
@@ -42,7 +42,7 @@ test_no_output() {
     local forbidden="$3"
     
     output=$(echo -e "$input\nexit" | NO_COLOR=1 $SHELL 2>&1 | \
-        sed 's/\[my_shell\]> //g' | \
+        sed 's/\[minishell\]> //g' | \
         grep -v "^exit$" | \
         grep -v "^$" | \
         tr '\n' ' ')
@@ -94,7 +94,6 @@ echo ""
 echo -e "${BLUE}OR with Builtins:${NC}"
 test_logical "OR - cd fail fallback" "cd /nonexistent_dir_12345 || echo fallback\nexit" "fallback"
 test_logical "OR - pwd success" "pwd || echo FAIL\nexit" "my_shell"
-
 # AND with Pipes
 echo ""
 echo -e "${BLUE}AND with Pipes:${NC}"
