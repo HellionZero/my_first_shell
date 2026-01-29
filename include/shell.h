@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:23:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/23 14:41:22 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/29 17:39:05 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,19 @@
 # define MAX_COMMAND_LENGTH 131072
 
 /* Exit status management */
+
+/* Sets the exit status of the last executed command */
 void	set_exit_status(int status);
+
+/* Retrieves the exit status of the last executed command */
 int		get_exit_status(void);
 
 /* Shell initialization and cleanup */
+
+/* Initializes the shell environment */
 t_env	*init_shell(char **envp);
+
+/* Cleans up shell resources */
 void	cleanup_shell(t_env *env);
 
 /* Input utilities */
