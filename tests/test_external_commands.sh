@@ -1,5 +1,22 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -z "$SHELL" ]; then
+	if [ -x "$SCRIPT_DIR/../minishell" ]; then
+		SHELL="$SCRIPT_DIR/../minishell"
+	elif [ -x "$PWD/../minishell" ]; then
+		SHELL="$PWD/../minishell"
+	elif [ -x "$PWD/minishell" ]; then
+		SHELL="$PWD/minishell"
+	else
+		echo "minishell binary not found" >&2
+		exit 1
+	fi
+fi
+if [ -z "$SHELL_PATH" ]; then
+	SHELL_PATH="$SHELL"
+fi
+
 # Test suite for external command execution
 
 GREEN='\033[0;32m'
@@ -7,7 +24,6 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-SHELL="../minishell"
 PASSED=0
 FAILED=0
 

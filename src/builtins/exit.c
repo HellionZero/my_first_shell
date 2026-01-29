@@ -32,10 +32,10 @@ static int	is_numeric_arg(char *str)
 	return (1);
 }
 
-static int	return_exit_code(char **str)
+static int	return_exit_code(char **str, t_env *env)
 {
 	if (!str || !str[1])
-		return (0);
+		return (env->exit_code);
 	else if (is_numeric_arg(str[1]))
 		return ((unsigned char)ft_atoi(str[1]) % 256);
 	else
@@ -64,9 +64,9 @@ static int	check_args(int argc, char **args, t_env *env)
 		if (args[1])
 			return_numeric_error(args[1]);
 		env->should_exit = 1;
-		env->exit_code = 255;
-		set_exit_status(255);
-		return (255);
+		env->exit_code = 2;
+		set_exit_status(2);
+		return (2);
 	}
 	return (0);
 }
@@ -81,7 +81,7 @@ int	builtin_exit(char **args, t_env *env)
 	ft_printf("exit\n");
 	if (check_args(arg_count, args, env))
 		return (env->exit_code);
-	exit_code = return_exit_code(args);
+	exit_code = return_exit_code(args, env);
 	env->should_exit = 1;
 	env->exit_code = exit_code;
 	set_exit_status(exit_code);

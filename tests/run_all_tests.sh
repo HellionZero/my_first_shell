@@ -1,5 +1,33 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -z "$SHELL" ]; then
+	if [ -x "$SCRIPT_DIR/../minishell" ]; then
+		SHELL="$SCRIPT_DIR/../minishell"
+	elif [ -x "$PWD/../minishell" ]; then
+		SHELL="$PWD/../minishell"
+	elif [ -x "$PWD/minishell" ]; then
+		SHELL="$PWD/minishell"
+	fi
+fi
+if [ -z "$SHELL_PATH" ]; then
+	SHELL_PATH="$SHELL"
+fi
+
+# Quick build check: compile if binary missing or not executable
+if [ ! -x "$SHELL" ]; then
+	echo "minishell binary not found or not executable, attempting to build..."
+	(cd "$SCRIPT_DIR/.." && make -j) >/dev/null 2>&1 || { echo "Compilation failed" >&2; exit 1; }
+	if [ -x "$SCRIPT_DIR/../minishell" ]; then
+		SHELL="$SCRIPT_DIR/../minishell"
+		SHELL_PATH="$SHELL"
+	fi
+fi
+if [ ! -x "$SHELL" ]; then
+	echo "minishell binary not found after build" >&2
+	exit 1
+fi
+
 # Master test runner - executes all test suites
 
 GREEN='\033[0;32m'
@@ -93,11 +121,19 @@ echo -e "${BLUE}[11/16]${NC} Pipe Tests"
 echo "========================================="
 run_suite "Pipe Tests" "test_pipes.sh"
 
-echo -e "${BLUE}[12/16]${NC} External Commands Tests"
+echo -e "${BLUE}[12/18]${NC} External Commands Tests"
 echo "========================================="
 run_suite "External Command Tests" "test_external_commands.sh"
 
-echo -e "${BLUE}[13/16]${NC} Logical Operators Tests"
+echo -e "${BLUE}[13/18]${NC} Exit Status Tests"
+echo "========================================="
+run_suite "Exit Status Tests" "test_exit_status.sh"
+
+echo -e "${BLUE}[14/18]${NC} Error Message Tests"
+echo "========================================="
+run_suite "Error Message Tests" "test_error_messages.sh"
+
+echo -e "${BLUE}[15/18]${NC} Logical Operators Tests"
 echo "========================================="
 run_suite "Logical Operators Tests" "test_logical.sh"
 

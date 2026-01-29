@@ -6,58 +6,61 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 17:34:24 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/27 19:04:17 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/29 16:14:30 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-int	is_pure_redirect_command(t_command *cmd)
+static int	count_pipeline_cmds(t_ast_node *node)
 {
-	if (!cmd)
-		return (0);
-	if ((!cmd->args || !cmd->args[0]) && cmd->redirects)
-		return (1);
-	return (0);
+	int	count;
+
+	count = 0;
+	while (node && node->type == NODE_PIPE)
+	{
+		count++;
+		node = node->left;
+	}
+	return (count + 1);
 }
 
-int	is_pure_redirect_command_node(t_ast_node *node)
-{
-	if (!node || !node->cmd)
-		return (0);
-	return (is_pure_redirect_command(node->cmd));
-}
-
-void	close_pipes(int (*pipes)[2], int n_pipes)
+static void	fill_pipeline_cmds(t_ast_node *node, t_ast_node **cmds, int n)
 {
 	int	i;
 
-	i = 0;
-	while (i < n_pipes)
+	i = n - 1;
+	while (node && node->type == NODE_PIPE)
 	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
+		cmds[i--] = node->right;
+		node = node->left;
 	}
+	cmds[0] = node;
 }
 
-int	wait_pipeline_children(pid_t *pids, int n_cmds)
+t_pipeline	*pipeline_create(t_ast_node *node)
 {
-	int	i;
-	int	exit_status;
-	int	final_status;
+	t_pipeline	*pl;
+	int			n_cmds;
 
-	i = 0;
-	final_status = 0;
-	while (i < n_cmds)
+	if (!node)
+		return (NULL);
+	n_cmds = count_pipeline_cmds(node);
+	pl = (t_pipeline *)malloc(sizeof(t_pipeline));
+	if (!pl)
 	{
-		waitpid(pids[i], &exit_status, 0);
-		if (WIFEXITED(exit_status))
-			final_status = WEXITSTATUS(exit_status);
-		else if (WIFSIGNALED(exit_status))
-			final_status = 128 + WTERMSIG(exit_status);
-		i++;
+		perror("malloc");
+		exit(EXIT_FAILURE);
 	}
-	free(pids);
-	return (final_status);
+	pl->n_cmds = n_cmds;
+	pl->cmds = (t_ast_node **)malloc(sizeof(t_ast_node *) * n_cmds);
+	if (!pl->cmds)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	fill_pipeline_cmds(node, pl->cmds, n_cmds);
+	pl->pipes = create_pipes(n_cmds);
+	pl->pids = NULL;
+	return (pl);
 }

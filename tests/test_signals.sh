@@ -1,5 +1,33 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -z "$SHELL" ]; then
+	if [ -x "$SCRIPT_DIR/../minishell" ]; then
+		SHELL="$SCRIPT_DIR/../minishell"
+	elif [ -x "$PWD/../minishell" ]; then
+		SHELL="$PWD/../minishell"
+	elif [ -x "$PWD/minishell" ]; then
+		SHELL="$PWD/minishell"
+	fi
+fi
+if [ -z "$SHELL_PATH" ]; then
+	SHELL_PATH="$SHELL"
+fi
+
+# Quick build check: compile if binary missing or not executable
+if [ ! -x "$SHELL" ]; then
+	echo "minishell binary not found or not executable, attempting to build..."
+	(cd "$SCRIPT_DIR/.." && make -j) >/dev/null 2>&1 || { echo "Compilation failed" >&2; exit 1; }
+	if [ -x "$SCRIPT_DIR/../minishell" ]; then
+		SHELL="$SCRIPT_DIR/../minishell"
+		SHELL_PATH="$SHELL"
+	fi
+fi
+if [ ! -x "$SHELL" ]; then
+	echo "minishell binary not found after build" >&2
+	exit 1
+fi
+
 # Test suite for signal handling in my_shell
 # Tests Ctrl+C, Ctrl+D, exit builtin, cleanup, and signal state
 
