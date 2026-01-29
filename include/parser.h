@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:11:15 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/05 16:00:13 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/11 16:49:37 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ int			should_expand_heredoc(char *delimiter);
 char		*clear_heredoc_delimiter(char *delimiter);
 char		*extract_var_name_heredoc(char *start, int *len);
 char		*expand_heredoc_line(char *line);
+void		write_line_to_pipe(int fd, char *line);
+
+/* heredoc expansion utils */
+void		read_heredoc_content(int pipe_fd, char *delimiter,
+				char *clean_delim);
+char		*get_expanded_line(char *line, char *delimiter);
+int			is_delimiter_reached(char *line, char *clean_delim);
 
 /* heredoc processing */
 int			process_heredoc(char *delimiter);
@@ -44,6 +51,12 @@ int			setup_heredoc(t_redirect *redir);
 void		close_heredoc_fd(t_redirect *redir);
 void		cleanup_heredoc_fds(t_redirect *redir);
 int			process_all_heredocs(t_command *cmd);
+
+/* environment variable setting*/
+
+void		set_shell_env(t_env	*env);
+t_env		*get_shell_env(void);
+void		reset_shell_env(void);
 
 /* Syntax validation */
 int			validate_syntax(t_token *tokens);
@@ -66,12 +79,8 @@ void		parse_cleanup(t_ast_node *partial_tree, t_token *remaining_tokens);
 void		parse_error_node(char *msg, t_ast_node *node);
 void		parse_error_command(char *msg, t_command *cmd);
 void		empty_command_error(t_command *cmd);
-void		*parser_null_error(char *msg);
-void		parse_error_free(char *msg, void *ptr, void (*free_func)(void *));
-int			redirect_error(char *msg, t_token_type type, char *file);
 int			ambiguous_redirect_error(char *target);
 int			heredoc_limiter_error(char *delimiter);
-int			parser_false_error(char *message);
 
 /* Syntax helper checks */
 int			is_invalid_start_token(t_token *token);

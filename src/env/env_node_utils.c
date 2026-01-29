@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 16:32:45 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/02 18:12:24 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/10 16:53:44 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,19 @@ void	free_env(t_env *env)
 		return ;
 	free_env_list(env->vars);
 	free(env);
+}
+
+void	add_env_node_to_end(t_env *env, t_env_var *node)
+{
+	t_env_var	*current;
+
+	if (!env->vars)
+	{
+		env->vars = node;
+		return ;
+	}
+	current = env->vars;
+	while (current->next)
+		current = current->next;
+	current->next = node;
 }

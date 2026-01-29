@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:07:38 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/06 18:23:52 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/10 18:33:08 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,57 +50,5 @@ typedef enum e_node_type
 	NODE_AND,
 	NODE_OR,
 }	t_node_type;
-
-enum e_output_format
-{
-	OUTPUT_FORMAT_PLAIN,
-	OUTPUT_FORMAT_TABLE,
-	OUTPUT_FORMAT_COLORED,
-	OUTPUT_FORMAT_CSV,
-	OUTPUT_FORMAT_HTML,
-	OUTPUT_FORMAT_JSON,
-	OUTPUT_FORMAT_XML,
-}	;
-
-enum e_prompt_type
-{
-	PROMPT_PRIMARY,
-	PROMPT_SECONDARY,
-	PROMPT_HEREDOC,
-	PROMPT_QUOTE,
-	PROMPT_DQUOTE,
-	PROMPT_ERROR,
-	PROMPT_COUNT,
-	PROMPT_NONE,
-	PROMPT_CUSTOM,
-}	;
-
-enum e_prompt_style
-{
-	PROMPT_STYLE_DEFAULT,
-	PROMPT_STYLE_MINIMAL,
-	PROMPT_STYLE_DETAILED,
-	PROMPT_STYLE_FANCY,
-}	;
-
-enum	e_verbose
-{
-	VERBOSE,
-	NONVERBOSE,
-	OFF,
-}	;
-
-enum e_terminal_type
-{
-	TERMINAL_TYPE_DUMB,
-	TERMINAL_TYPE_OTHER,
-}	;
-
-enum	e_color_mode
-{
-	COLOR_MODE_AUTO,
-	COLOR_MODE_ALWAYS,
-	COLOR_MODE_NEVER,
-}	;
 
 #endif

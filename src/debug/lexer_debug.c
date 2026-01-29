@@ -12,6 +12,14 @@
 
 #include "../../include/shell.h"
 
+int	is_debug_enabled(void)
+{
+	char	*debug_mode;
+
+	debug_mode = getenv("DEBUG");
+	return (debug_mode && ft_strcmp(debug_mode, "1") == 0);
+}
+
 static const char	**get_part_type_names(void)
 {
 	static const char	*names[] = {

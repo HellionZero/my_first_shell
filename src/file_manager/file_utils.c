@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 15:26:14 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/08 15:44:28 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 16:23:25 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,24 @@ int	validate_executable(char *path)
 {
 	if (access(path, X_OK) == 0)
 		return (1);
+	if (access(path, F_OK) == 0 && access(path, X_OK) != 0)
+	{
+		set_exit_status(126);
+		return (126);
+	}
 	return (0);
 }
 
-void	cache_executables(t_env *env)
+int	is_directory_error(char *path)
 {
-	(void)env;
+	struct stat	st;
+
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		set_exit_status(126);
+		return (126);
+	}
+	return (-1);
 }

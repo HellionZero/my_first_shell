@@ -6,92 +6,42 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 14:56:26 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/08 19:04:57 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/29 15:37:16 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-static void	execute_in_child(t_ast_node *node, t_env *env)
+int	is_pure_redirect_command(t_command *cmd)
 {
-	char	*executable;
-	char	**envp;
-
-	set_exit(node, env);
-	executable = find_executable(node->cmd->args[0], env);
-	if (!executable)
-	{
-		ft_printf("%s: command not found\n", node->cmd->args[0]);
-		exit(127);
-	}
-	envp = env_to_array(env);
-	if (!envp)
-		free_exec_and_exit(executable);
-	execve(executable, node->cmd->args, envp);
-	ft_printf("%s: execution failed\n", node->cmd->args[0]);
-	free_env_array(envp);
-	free(executable);
-	exit(126);
+	if (!cmd)
+		return (0);
+	if ((!cmd->args || !cmd->args[0]) && cmd->redirects)
+		return (1);
+	return (0);
 }
 
-static void	setup_left_child(int *pipe_fds, t_ast_node *node, t_env *env)
+int	is_pure_redirect_command_node(t_ast_node *node)
 {
-	restore_signals_default();
-	close(pipe_fds[0]);
-	dup2(pipe_fds[1], STDOUT_FILENO);
-	close(pipe_fds[1]);
-	execute_in_child(node, env);
-}
-
-static void	setup_right_child(int *pipe_fds, t_ast_node *node, t_env *env)
-{
-	restore_signals_default();
-	close(pipe_fds[1]);
-	dup2(pipe_fds[0], STDIN_FILENO);
-	close(pipe_fds[0]);
-	execute_in_child(node, env);
-}
-
-static int	wait_both_children(pid_t pid_left, pid_t pid_right)
-{
-	int	status_left;
-	int	status_right;
-
-	waitpid(pid_left, &status_left, 0);
-	waitpid(pid_right, &status_right, 0);
-	setup_signals_interactive();
-	if (WIFEXITED(status_right))
-		return (WEXITSTATUS(status_right));
-	if (WIFSIGNALED(status_right))
-		return (128 + WTERMSIG(status_right));
-	return (1);
+	if (!node || !node->cmd)
+		return (0);
+	return (is_pure_redirect_command(node->cmd));
 }
 
 int	execute_pipe(t_ast_node *node, t_env *env)
 {
-	pid_t	pid_left;
-	pid_t	pid_right;
-	int		pipe_fds[2];
+	t_pipeline	*pl;
+	int			status;
 
-	if (!node || !node->left || !node->right)
+	pl = pipeline_create(node);
+	if (!pl)
 		return (1);
-	setup_signals_executing();
-	if (pipe(pipe_fds) == -1)
+	if (pipeline_spawn(pl, env) == -1)
 	{
-		perror("pipe");
+		pipeline_destroy(pl);
 		return (1);
 	}
-	pid_left = fork();
-	if (pid_left == -1)
-		return (perror("fork"), 1);
-	if (pid_left == 0)
-		setup_left_child(pipe_fds, node->left, env);
-	pid_right = fork();
-	if (pid_right == -1)
-		return (perror("fork"), 1);
-	if (pid_right == 0)
-		setup_right_child(pipe_fds, node->right, env);
-	close(pipe_fds[0]);
-	close(pipe_fds[1]);
-	return (wait_both_children(pid_left, pid_right));
+	status = pipeline_wait_and_cleanup(pl);
+	pipeline_destroy(pl);
+	return (status);
 }

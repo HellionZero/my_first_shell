@@ -3,30 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 17:23:50 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/23 17:40:38 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/13 14:56:18 by loda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-static void	write_line_to_pipe(int fd, char *line)
-{
-	write(fd, line, ft_strlen(line));
-	write(fd, "\n", 1);
-}
-
-static char	*get_expanded_line(char *line, char *delimiter)
-{
-	if (should_expand_heredoc(delimiter))
-		return (expand_heredoc_line(line));
-	else
-		return (line);
-}
-
-static int	is_delimiter_reached(char *line, char *clean_delim)
+int	is_delimiter_reached(char *line, char *clean_delim)
 {
 	if (!line)
 		return (1);
@@ -35,38 +21,24 @@ static int	is_delimiter_reached(char *line, char *clean_delim)
 	return (0);
 }
 
-static void	read_heredoc_content(int pipe_fd, char *delimiter,
-	char *clean_delim)
-{
-	char	*line;
-	char	*expanded;
-
-	while (1)
-	{
-		line = readline("> ");
-		if (is_delimiter_reached(line, clean_delim))
-		{
-			if (line)
-				free(line);
-			break ;
-		}
-		expanded = get_expanded_line(line, delimiter);
-		write_line_to_pipe(pipe_fd, expanded);
-		if (expanded != line)
-			free(expanded);
-		free(line);
-	}
-}
-
 int	process_heredoc(char *delimiter)
 {
-	int		pipe_fds[2];
-	char	*clean_delim;
+	int				pipe_fds[2];
+	char			*clean_delim;
+	t_signal_state	*state;
 
 	pipe(pipe_fds);
 	clean_delim = clear_heredoc_delimiter(delimiter);
+	signal_enter_heredoc();
 	read_heredoc_content(pipe_fds[1], delimiter, clean_delim);
+	state = get_signal_state();
+	signal_exit_heredoc();
 	free(clean_delim);
 	close(pipe_fds[1]);
+	if (state->received == SIGINT)
+	{
+		close(pipe_fds[0]);
+		return (-1);
+	}
 	return (pipe_fds[0]);
 }

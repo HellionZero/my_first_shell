@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 17:56:03 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/05 16:27:24 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/19 15:47:17 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,10 @@ int	has_heredoc(t_command *cmd)
 		current = current->next;
 	}
 	return (0);
+}
+
+void	write_line_to_pipe(int fd, char *line)
+{
+	write(fd, line, ft_strlen(line));
+	write(fd, "\n", 1);
 }

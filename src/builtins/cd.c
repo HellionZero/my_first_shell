@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 13:48:12 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/09 18:38:02 by loda-sil         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:24:31 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static char	*get_target_dir(char **args, t_env *env)
 {
 	char	*target;
-	
+
 	if (!args[1])
 	{
 		target = get_env_value(env, "HOME");
@@ -69,13 +69,13 @@ int	builtin_cd(char **args, t_env *env)
 {
 	char	*target;
 	int		arg_count;
-	
-	if(!env)
+
+	if (!env)
 		return (1);
 	arg_count = count_args(args);
 	if (arg_count > 2)
 	{
-		ft_printf("minishell: cd: too many arguments\n");
+		ft_putstr_fd("minishell: too many arguments", STDERR_FILENO);
 		return (1);
 	}
 	target = get_target_dir(args, env);

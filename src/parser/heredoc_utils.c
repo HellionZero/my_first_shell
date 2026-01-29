@@ -6,18 +6,11 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 16:44:11 by lsarraci          #+#    #+#             */
-/*   Updated: 2025/12/23 18:09:46 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/19 16:02:39 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
-
-int	should_expand_heredoc(char *delimiter)
-{
-	if (!delimiter)
-		return (0);
-	return (!has_quotes(delimiter[0]));
-}
 
 char	*clear_heredoc_delimiter(char *delimiter)
 {
@@ -50,39 +43,49 @@ char	*extract_var_name_heredoc(char *start, int *len)
 	return (var_name);
 }
 
-static char	*process_variable(char *line, int *i)
+static int	check_delimeter(char *line, char *clean_delim)
 {
-	char	*var_name;
-	char	*var_value;
-	int		var_len;
-
-	var_name = extract_var_name_heredoc(&line[*i + 1], &var_len);
-	var_value = expand_variable(var_name);
-	free(var_name);
-	*i += var_len + 1;
-	return (var_value);
+	if (is_delimiter_reached(line, clean_delim))
+	{
+		if (!line || line[0] == '\0')
+			return (0);
+		free(line);
+		return (1);
+	}
+	return (0);
 }
 
-char	*expand_heredoc_line(char *line)
+static int	check_line_with_prompt(char **line_ptr, char *prompt)
 {
-	char	*result;
-	char	*var_value;
-	int		i;
+	char	*line;
 
-	if (!line || !needs_expansion(line))
-		return (ft_strdup(line));
-	result = ft_strdup("");
-	i = 0;
-	while (line[i])
+	line = read_line_with_prompt(prompt);
+	if (!line)
+		return (0);
+	*line_ptr = line;
+	return (1);
+}
+
+void	read_heredoc_content(int pipe_fd, char *delimiter,
+	char *clean_delim)
+{
+	char			*line;
+	char			*expanded;
+	t_signal_state	*state;
+
+	state = get_signal_state();
+	while (1)
 	{
-		if (line[i] == '$' && line[i + 1] && is_var_char(line[i + 1]))
-		{
-			var_value = process_variable(line, &i);
-			result = join_and_free(result, var_value);
-			free(var_value);
-		}
-		else
-			result = join_char_and_free(result, line[i++]);
+		if (state->received == SIGINT)
+			break ;
+		if (check_line_with_prompt(&line, "> ") == 0)
+			break ;
+		if (check_delimeter(line, clean_delim))
+			break ;
+		expanded = get_expanded_line(line, delimiter);
+		write_line_to_pipe(pipe_fd, expanded);
+		if (expanded != line)
+			free(expanded);
+		free(line);
 	}
-	return (result);
 }

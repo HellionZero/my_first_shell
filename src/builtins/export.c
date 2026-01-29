@@ -3,41 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: loda-sil <loda-sil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 18:43:44 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/09 17:38:30 by loda-sil         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:59:34 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-static void print_sorted_env(t_env *env)
+static void	print_sorted_env(t_env *env)
 {
-	t_env_var *current;
+	t_env_var	*current;
 
 	current = env->vars;
 	while (current)
 	{
-		ft_printf("%s=\"%s\"\n", current->key, current->value);
+		ft_printf("declare -x %s=\"%s\"\n", current->key, current->value);
 		current = current->next;
 	}
 }
 
-static void valid_identifier(char **key, char **arg)
+static int	valid_identifier(char **key)
 {
-	if (!is_valid_identifier(*key))
-	{
-		ft_printf("minishell: export: `%s': not a valid identifier\n", *arg);
-		free(*key);
-	}
+	if (is_valid_identifier(*key))
+		return (1);
+	ft_putstr_fd("minishell: not a valid identifier\n", STDERR_FILENO);
+	free(*key);
+	*key = NULL;
+	return (0);
 }
 
-static int process_export_arg(char *arg, t_env *env)
+static int	process_export_arg(char *arg, t_env *env)
 {
-	char *equal_sign;
-	char *key;
-	char *value;
+	char	*equal_sign;
+	char	*key;
+	char	*value;
 
 	equal_sign = ft_strchr(arg, '=');
 	if (!equal_sign)
@@ -45,7 +46,8 @@ static int process_export_arg(char *arg, t_env *env)
 	key = ft_substr(arg, 0, equal_sign - arg);
 	if (!key)
 		return (1);
-	valid_identifier(&key, &arg);
+	if (!valid_identifier(&key))
+		return (1);
 	value = ft_strdup(equal_sign + 1);
 	if (!value)
 	{
@@ -58,10 +60,39 @@ static int process_export_arg(char *arg, t_env *env)
 	return (0);
 }
 
-int builtin_export(char **args, t_env *env)
+static int	handle_export_arg(char *arg, t_env *env)
 {
-	int i;
+	char	*equal_sign;
+	char	*key;
+	int		result;
 
+	equal_sign = ft_strchr(arg, '=');
+	result = 0;
+	if (equal_sign)
+		key = ft_substr(arg, 0, equal_sign - arg);
+	else
+		key = ft_strdup(arg);
+	if (!key)
+		return (1);
+	if (!is_valid_identifier(key))
+	{
+		ft_putstr_fd("minishell: not a valid identifier\n", STDERR_FILENO);
+		free(key);
+		return (1);
+	}
+	free(key);
+	if (equal_sign)
+		result = process_export_arg(arg, env);
+	return (result);
+}
+
+int	builtin_export(char **args, t_env *env)
+{
+	int	i;
+	int	ret;
+
+	i = 1;
+	ret = 0;
 	if (!env)
 		return (1);
 	if (!args[1])
@@ -69,12 +100,11 @@ int builtin_export(char **args, t_env *env)
 		print_sorted_env(env);
 		return (0);
 	}
-	i = 1;
 	while (args[i])
 	{
-		if (process_export_arg(args[i], env) != 0)
-			return (1);
+		if (handle_export_arg(args[i], env) != 0)
+			ret = 1;
 		i++;
 	}
-	return (0);
+	return (ret);
 }

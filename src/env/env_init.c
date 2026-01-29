@@ -6,22 +6,12 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 17:54:58 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/02 18:13:02 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:49:08 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-/*
-** parse_env_string - Separa uma string "KEY=VALUE" em chave e valor
-** 
-** Parâmetros:
-**   env_str: string no formato "KEY=VALUE"
-**   key: ponteiro para armazenar a chave alocada
-**   value: ponteiro para armazenar o valor alocado
-**
-** Retorna: 1 em sucesso, 0 em falha
-*/
 static int	parse_env_string(char *env_str, char **key, char **value)
 {
 	char	*equal_sign;
@@ -46,12 +36,6 @@ static int	parse_env_string(char *env_str, char **key, char **value)
 	return (1);
 }
 
-/*
-** increment_shlvl - Incrementa a variável SHLVL quando a shell inicia
-**
-** SHLVL indica o nível de profundidade da shell (quantas shells aninhadas)
-** Se não existir, define como "1"
-*/
 static void	increment_shlvl(t_env *env)
 {
 	char	*shlvl_str;
@@ -101,4 +85,27 @@ t_env	*init_env(char **envp)
 	}
 	increment_shlvl(env);
 	return (env);
+}
+
+t_env	*deep_copy_env(t_env *src)
+{
+	t_env		*copy;
+	t_env_var	*current;
+
+	if (!src)
+		return (NULL);
+	copy = malloc(sizeof(t_env));
+	if (!copy)
+		return (NULL);
+	copy->vars = NULL;
+	copy->last_exit_status = src->last_exit_status;
+	copy->should_exit = src->should_exit;
+	copy->exit_code = src->exit_code;
+	current = src->vars;
+	while (current)
+	{
+		env_set(copy, current->key, current->value);
+		current = current->next;
+	}
+	return (copy);
 }

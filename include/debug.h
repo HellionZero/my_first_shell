@@ -15,6 +15,9 @@
 
 # include "structs.h"
 
+/* Debug control */
+int		is_debug_enabled(void);
+
 /* Lexer debug */
 void	print_tokens(t_token *tokens);
 

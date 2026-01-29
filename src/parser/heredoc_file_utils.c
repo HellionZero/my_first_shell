@@ -28,6 +28,11 @@ int	setup_heredoc(t_redirect *redir)
 	if (redir->heredoc_fd != -1)
 		return (1);
 	fd = process_heredoc(redir->delimiter);
+	if (fd < 0)
+	{
+		set_exit_status(130);
+		return (0);
+	}
 	redir->heredoc_fd = fd;
 	return (1);
 }

@@ -1,4 +1,7 @@
 .vscode
-tests
 *.supp
-*.sh
+*.log
+*.out
+*.o
+*.obj
+

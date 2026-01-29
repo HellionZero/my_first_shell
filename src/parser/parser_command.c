@@ -53,6 +53,12 @@ t_ast_node	*parse_simple_cmd(t_token **tokens)
 	if (!is_valid_command(cmd))
 		return (empty_command_error(cmd), NULL);
 	if (!process_all_heredocs(cmd))
-		return (parse_error_command("heredoc processing failed", cmd), NULL);
+	{
+		if (get_signal_state()->received != SIGINT)
+			parse_error_command("heredoc processing failed", cmd);
+		else
+			command_free(cmd);
+		return (NULL);
+	}
 	return (node_new_command(cmd));
 }

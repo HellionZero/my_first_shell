@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 15:31:38 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/02 17:55:13 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/26 19:36:32 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void	env_set(t_env *env, char *key, char *value)
 	node = create_env_node(key, value);
 	if (!node)
 		return ;
-	node->next = env->vars;
-	env->vars = node;
+	add_env_node_to_end(env, node);
 }
 
 void	env_unset(t_env *env, char *key)

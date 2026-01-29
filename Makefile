@@ -1,4 +1,4 @@
-NAME = my_shell
+NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 SRC = main.c
@@ -6,10 +6,26 @@ SRC = main.c
 EXEC_DIR = execution/
 SRC += $(EXEC_DIR)execution_main.c \
        $(EXEC_DIR)execute_command.c \
+	   $(EXEC_DIR)execute_command_helpers.c \
+	   $(EXEC_DIR)execute_command_utils.c \
+	   $(EXEC_DIR)execute_pipeline.c \
+	   $(EXEC_DIR)execute_pipeline_helpers.c \
+	   $(EXEC_DIR)execute_external.c \
        $(EXEC_DIR)execute_builtin.c \
+	   $(EXEC_DIR)execute_child_process.c \
+	   $(EXEC_DIR)execute_child_utils.c \
+	   $(EXEC_DIR)execute_child_helpers.c \
+	   $(EXEC_DIR)execute_builtin_files.c \
        $(EXEC_DIR)execute_pipe.c \
+	   $(EXEC_DIR)execute_pipes_utils.c \
        $(EXEC_DIR)execute_logical.c \
-       $(EXEC_DIR)execute_utils.c
+       $(EXEC_DIR)execute_utils.c \
+	   $(EXEC_DIR)execute_handles.c \
+	   $(EXEC_DIR)execute_redirects.c \
+	   $(EXEC_DIR)execute_redirects_apply.c \
+	   $(EXEC_DIR)execute_redirects_helpers.c \
+	   $(EXEC_DIR)execute_redirects_utils.c \
+	   $(EXEC_DIR)execute_stdio.c \
 
 BUILTINS_DIR = builtins/
 SRC += $(BUILTINS_DIR)cd.c \
@@ -39,6 +55,7 @@ SRC +=	$(PARSER_UTILS_DIR)command_utils.c \
 		$(PARSER_UTILS_DIR)general_utils.c \
 		$(PARSER_UTILS_DIR)heredoc_utils.c \
 		$(PARSER_UTILS_DIR)heredoc_file_utils.c \
+		$(PARSER_UTILS_DIR)heredoc_expansion_utils.c \
 		$(PARSER_UTILS_DIR)node_utils.c \
 		$(PARSER_UTILS_DIR)redirect_utils.c \
 		$(PARSER_UTILS_DIR)parser_expansion.c \
@@ -49,8 +66,8 @@ SRC +=	$(PARSER_UTILS_DIR)command_utils.c \
 		$(PARSER_UTILS_DIR)parser_utils.c \
 		$(PARSER_UTILS_DIR)parser_command.c \
 		$(PARSER_UTILS_DIR)parser_errors.c \
+		$(PARSER_UTILS_DIR)parser_env_accessor.c \
 		$(PARSER_UTILS_DIR)parser_error_msg.c \
-		$(PARSER_UTILS_DIR)parser_error_utils.c \
 		$(PARSER_UTILS_DIR)parser_build.c \
 		$(PARSER_UTILS_DIR)parser_empty.c \
 		$(PARSER_UTILS_DIR)syntax_checks.c \
@@ -74,7 +91,8 @@ SRC += $(DEBUG_DIR)lexer_debug.c \
 UTILS_DIR = utils/
 SRC += $(UTILS_DIR)exit_status.c \
 	   $(UTILS_DIR)shell_init.c \
-	   $(UTILS_DIR)shell_signals.c
+	   $(UTILS_DIR)shell_signals.c \
+	   $(UTILS_DIR)input_utils.c
 
 ENV_DIR = env/
 SRC += $(ENV_DIR)env_conversion.c \

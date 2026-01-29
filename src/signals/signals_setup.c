@@ -31,7 +31,7 @@ void	setup_signals_executing(void)
 {
 	t_sigaction	sa;
 
-	sa.sa_handler = SIG_DFL;
+	sa.sa_handler = SIG_IGN;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);

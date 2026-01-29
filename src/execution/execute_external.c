@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_pipe_utils.c                               :+:      :+:    :+:   */
+/*   execute_external.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 17:26:48 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/08 19:05:03 by lsarraci         ###   ########.fr       */
+/*   Created: 2026/01/10 13:45:48 by lsarraci          #+#    #+#             */
+/*   Updated: 2026/01/10 13:59:06 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-void	set_exit(t_ast_node *node, t_env *env)
+int	execute_external_command(char **args, t_env *env)
 {
-	if (!node)
-		exit(1);
-	if (node->type == NODE_PIPE)
-		exit(execute_pipe(node, env));
-	if (node->type != NODE_COMMAND || !node->cmd)
-		exit(1);
-	if (!node->cmd->args || !node->cmd->args[0])
-		exit(0);
-	if (is_builtin(node->cmd->args[0]))
-		exit(execute_builtin(node->cmd->args, env));
-}
+	t_command	cmd;
 
-void	free_exec_and_exit(char *exec)
-{
-	free(exec);
-	exit(1);
+	if (!args || !args[0])
+		return (0);
+	cmd.args = args;
+	cmd.redirects = NULL;
+	return (execute_command(&cmd, env));
 }

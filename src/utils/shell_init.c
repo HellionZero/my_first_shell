@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 19:39:01 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/06 20:14:38 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/29 15:08:46 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,26 @@
 t_env	*init_shell(char **envp)
 {
 	t_env	*env;
+	int		ctty_fd;
 
 	env = init_env(envp);
 	if (!env)
 		return (NULL);
-	display_banner();
+	ctty_fd = open("/dev/tty", O_RDONLY);
+	if (getenv("NO_COLOR") == NULL)
+	{
+		if (isatty(STDIN_FILENO) || isatty(STDOUT_FILENO)
+			|| ctty_fd != -1)
+		{
+			if (ctty_fd != -1)
+				close(ctty_fd);
+			display_banner();
+		}
+		else if (ctty_fd != -1)
+			close(ctty_fd);
+	}
+	else if (ctty_fd != -1)
+		close(ctty_fd);
 	return (env);
 }
 

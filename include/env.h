@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 17:50:56 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/02 18:01:45 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/01/29 17:28:49 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ void		free_env(t_env *env);
 
 /*--------- environment management utils -----------------*/
 t_env_var	*create_env_node(char *key, char *value);
+void		add_env_node_to_end(t_env *env, t_env_var *node);
 void		free_env_node(t_env_var *node);
 void		free_env_list(t_env_var *list);
+t_env		*deep_copy_env(t_env *src);
 
+/*--------- environment variable operations -------------*/
 t_env_var	*env_get(t_env *env, char *key);
 void		env_set(t_env *env, char *key, char *value);
 void		env_unset(t_env *env, char *key);
