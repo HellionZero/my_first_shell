@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/02 17:50:56 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/29 17:28:49 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/02/02 14:09:59 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include "structs.h"
 
 /*--------- environment initialization -----------------*/
+
+/* function to initialize the environment 
+from an array of strings, which is 
+the envp parameter from main */
 t_env		*init_env(char **envp);
 void		free_env(t_env *env);
 

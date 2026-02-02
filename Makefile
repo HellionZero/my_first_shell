@@ -12,7 +12,6 @@ SRC += $(EXEC_DIR)execution_main.c \
 	   $(EXEC_DIR)execute_pipeline_helpers.c \
 	   $(EXEC_DIR)execute_external.c \
        $(EXEC_DIR)execute_builtin.c \
-	   $(EXEC_DIR)execute_child_process.c \
 	   $(EXEC_DIR)execute_child_utils.c \
 	   $(EXEC_DIR)execute_child_helpers.c \
 	   $(EXEC_DIR)execute_builtin_files.c \

@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:11:15 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/11 16:49:37 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/02/02 14:14:14 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,17 @@ int			process_all_heredocs(t_command *cmd);
 
 /* environment variable setting*/
 
+/* singleton accessors for shell environment. 
+reads the state of shell environment, initialized
+by zero, and updated on each change */
 void		set_shell_env(t_env	*env);
+
+/* retrieves the current shell environment instance. 
+while the terminal is active, the values of shell 
+environment variables remain consistent */
 t_env		*get_shell_env(void);
+
+/* resets the shell environment instance to NULL */
 void		reset_shell_env(void);
 
 /* Syntax validation */

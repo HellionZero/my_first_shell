@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 17:25:20 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/29 17:25:23 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/02/02 15:14:05 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 # include "structs.h"
 
-/* Redirection basic operations */
+/* ---------------- Redirection basic operations -----------------*/
 int		apply_redir_in(t_redirect *redir);
 int		apply_redir_out(t_redirect *redir);
 int		apply_append(t_redirect *redir);
 int		apply_heredoc(t_redirect *redir);
 int		apply_redirects(t_command *cmd);
 
-/* Internal redirect helpers */
+/* ----------------- Internal redirect helpers ----------------- */
 void	cleanup_unused_heredocs(t_command *cmd);
 int		apply_single_redirect(t_redirect *redir);
 int		validate_out_file(t_redirect *current, t_command *cmd);
