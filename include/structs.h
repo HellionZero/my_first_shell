@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:10:09 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/02/02 14:59:29 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/02/05 16:20:59 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,16 @@ struct s_command
 
 /* Binary tree node representing a command
 or operation in the shell's abstract syntax tree.
-the nodes are composed of the parsed commands and operations. 
+the nodes are composed of the parsed
+commands and operations. 
 type: enum to identify the type of node.
-*cmd: pointer to the command structure, if the node represents a command.
+*cmd: pointer to the command structure,
+if the node represents a command.
 *left: pointer to the left child node in the AST.
 *right: pointer to the right child node in the AST.
-*/
+trees are used to represent the hierarchical
+structure of commands and operators. in this case, 
+pipes comes first, followed by logical operators. */
 struct s_ast_node
 {
 	t_node_type			type;

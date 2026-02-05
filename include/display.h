@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:57:36 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/02/02 15:08:14 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/02/05 17:28:28 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define DISPLAY_H
 
 /*
-** Códigos de cores ANSI
+** ANSI color codes for terminal output
 */
 # define COLOR_RESET	"\033[0m"
 # define COLOR_BOLD		"\033[1m"
