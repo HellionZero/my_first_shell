@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 16:23:21 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/02/02 15:13:27 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/02/09 15:32:05 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	cleanup_shell(t_env *env);
 
 /* function to read a line of input from the user 
 with a given prompt from an interactive terminal. */
-char	*read_line_with_prompt(char *prompt);
+char	*read_line_with_prompt(const char *prompt);
 
 /* ----------------- Shell signal utilities ------------------*/
 
