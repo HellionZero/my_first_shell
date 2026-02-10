@@ -110,17 +110,13 @@ make leak
 
 ## Uso de IA
 
-A IA (Claude Haiku) foi utilizada para:
+A IA foi utilizada para:
 
 1. **Análise e Debugging**: Revisão de código, identificação de bugs em gerenciamento de memória e lógica de execução
 2. **Documentação**: Criação e estruturação de comentários no código e documentação técnica
 3. **Testes**: Sugestões para casos de teste e identificação de edge cases
 4. **Otimizações**: Recomendações para melhorar performance e legibilidade do código
 5. **Padrões de Design**: Consultoria sobre estruturas de dados e arquitetura de software
-
-A IA foi usada principalmente em:
-- Seções: `src/execution/`, `src/parser/`, `include/structs.h`
-- Tarefas: Debugging de pipes, redirecionamentos, e tratamento de sinais
 
 ---
 
