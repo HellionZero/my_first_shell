@@ -162,6 +162,6 @@ leak: $(NAME)
 	@echo "Quick leak check..."
 	@echo -e 'pwd\nexit' | valgrind --leak-check=full \
 		--show-leak-kinds=definite,possible \
-		./my_shell 2>&1 | grep -E "LEAK SUMMARY|definitely lost|possibly lost" -A 2
+		./minishell 2>&1 | grep -E "LEAK SUMMARY|definitely lost|possibly lost" -A 2
 
 .PHONY: all clean fclean re leak
