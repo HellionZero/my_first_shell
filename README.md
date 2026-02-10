@@ -84,6 +84,7 @@ make leak
 ### Estrutura do Projeto
 
 ```
+.
 ├── src/                      # Código fonte principal
 │   ├── main.c               # Ponto de entrada
 │   ├── builtins/            # Comandos built-in (cd, echo, etc.)
@@ -236,7 +237,7 @@ Consulte os arquivos em `documentation/`:
 ## Autores
 
 - **lsarraci** - Implementação principal
-- **HellionZero** - Contribuições e testes
+- **loda-sil** - Contribuições e testes
 
 ---
 
