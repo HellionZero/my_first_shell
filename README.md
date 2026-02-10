@@ -1,4 +1,4 @@
-*Este projeto foi criado como parte do currículo da 42 por lsarraci, HellionZero.*
+*Este projeto foi criado como parte do currículo da 42 por lsarraci, loda-sil.*
 
 ---
 
