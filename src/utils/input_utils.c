@@ -6,13 +6,13 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 16:11:03 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/01/11 16:11:08 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/02/09 15:31:48 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/shell.h"
 
-char	*read_line_with_prompt(char *prompt)
+char	*read_line_with_prompt(const char *prompt)
 {
 	char			*line;
 	size_t			len;

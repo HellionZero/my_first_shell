@@ -1,0 +1,26 @@
+# Valgrind suppressions geradas automaticamente para comandos externos
+# Não editar manualmente a não ser que saiba o que está a fazer.
+{
+<insert_a_suppression_name_here>
+Memcheck:Leak
+match-leak-kinds: reachable
+fun:malloc
+obj:/usr/bin/grep
+fun:(below main)}
+match-leak-kinds: indirect
+fun:re_node_set_init_copy
+fun:create_cd_newstate
+fun:re_acquire_state_context
+fun:create_initial_state
+fun:re_compile_internal
+fun:re_compile_pattern
+fun:re_node_set_alloc
+fun:register_state
+fun:analyze
+fun:calc_eclosure_iter
+fun:calloc
+fun:init_dfa
+match-leak-kinds: possible
+fun:realloc
+match-leak-kinds: definite
+obj:/usr/bin/ls

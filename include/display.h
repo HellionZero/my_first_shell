@@ -6,7 +6,7 @@
 /*   By: lsarraci <lsarraci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:57:36 by lsarraci          #+#    #+#             */
-/*   Updated: 2026/02/05 17:28:28 by lsarraci         ###   ########.fr       */
+/*   Updated: 2026/02/09 15:28:49 by lsarraci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ void				display_banner(void);
 simulating the behavior of the bash shell */
 void				ensure_newline_for_prompt(void);
 
-/* Function to build the shell prompt. It returns a 
-dynamically allocated string based on options 
-setted by environment variables,
-like colors and UTF-8 encoded characters.*/
-char				*build_prompt(void);
+/* return the prompt string. the string is static. */
+const char				*build_prompt(void);
 
 #endif
