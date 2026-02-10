@@ -101,8 +101,6 @@ make leak
 ├── lib/                     # Bibliotecas auxiliares
 │   ├── libft/              # Biblioteca padrão customizada
 │   └── ft_printf/          # Implementação customizada de printf
-├── tests/                   # Suite de testes
-├── documentation/           # Documentação adicional
 └── Makefile                 # Build system
 ```
 
