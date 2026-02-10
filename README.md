@@ -84,7 +84,6 @@ make leak
 ### Estrutura do Projeto
 
 ```
-.
 ├── src/                      # Código fonte principal
 │   ├── main.c               # Ponto de entrada
 │   ├── builtins/            # Comandos built-in (cd, echo, etc.)
