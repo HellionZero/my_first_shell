@@ -204,36 +204,6 @@ linha 2
 
 ---
 
-## Testes
-
-O projeto inclui uma suite abrangente de testes. Para executá-los:
-
-```bash
-cd tests/
-bash run_all_tests.sh
-```
-
-Testes disponíveis:
-- `test_builtins.sh` - Testa comandos built-in
-- `test_pipes.sh` - Testa pipes e canalização
-- `test_redirections.sh` - Testa redirecionamentos
-- `test_env_vars.sh` - Testa variáveis de ambiente
-- `test_signals.sh` - Testa tratamento de sinais
-- `test_heredoc.sh` - Testa heredocs
-
----
-
-## Documentação Interna
-
-Consulte os arquivos em `documentation/`:
-- `DOCUMENTATION_GUIDE.md` - Guia de padrões de documentação
-- `GIT_GUIDE.md` - Workflow git do projeto
-- `lexer.md` - Documentação do lexer
-- `MEMORY_LEAKS.md` - Informações sobre detecção de memory leaks
-- `TESTS.md` - Guia de testes
-
----
-
 ## Autores
 
 - **lsarraci** - Implementação principal
